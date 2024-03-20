@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LightningLogin from './LightningLogin';
-import Web5Login from './Web5Login';
+// import Web5Login from './Web5Login'; // Temporarily disable import if not used elsewhere
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
 
 function App() {
@@ -27,7 +27,9 @@ function App() {
             {!isLoggedIn ? (
               <>
                 <LightningLogin onLogin={() => setIsLoggedIn(true)} />
+                {/* Commenting out the Web5Login for now
                 <Web5Login onLogin={() => setIsLoggedIn(true)} />
+                */}
               </>
             ) : (
               <p>Welcome! You're logged in.</p>
