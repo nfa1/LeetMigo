@@ -11,7 +11,7 @@ function App() {
       {/* Use Bootstrap classes to style the header */}
       <header className="App-header text-center bg-primary text-white py-3 mb-4">
         {/* Title with emojis, centered and styled with Bootstrap */}
-        <h1>LeetBuddy 🎮👾</h1>
+        <h1>LeetMigo 🎮👾</h1>
       </header>
 
       <div className="container">
