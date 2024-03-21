@@ -28,19 +28,33 @@ function App() {
     }
   };
 
+  // Redirect to the provided URL
+  const redirectToLeetMigo = () => {
+    window.location.href = "https://chat.openai.com/g/g-JD79hRxJc-leetmigo";
+  };
+
   return (
-    <div className="App" style={{ backgroundColor: '#282c34', minHeight: '100vh', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <h1>LeetMigo 🎮👾</h1>
-      <p>Please save and store your generated DID in a safe location.</p>
-      <p>Your DID: {did}</p>
-      <form className="form-inline" onSubmit={switchAccount}>
-        <div className="form-group mb-2">
-          <label htmlFor="didInput" className="sr-only">Paste your DID to switch accounts:</label>
-          <input type="text" className="form-control" id="didInput" placeholder="Paste your DID" value={userInput} onChange={handleInputChange} />
-        </div>
-        <button type="submit" className="btn btn-primary mb-2">Switch Account</button>
-      </form>
+    <div className="App d-flex flex-column vh-100 justify-content-center align-items-center text-center" style={{ backgroundColor: '#000', color: '#fff', width: '100%' }}>
+      <header className="mb-4 w-100" style={{ backgroundColor: '#333' }}>
+        <h1>LeetMigo 🎮👾</h1>
+        <p className="tagline">Your based technical mock interviewer so that you can land that awesome software engineering job!</p>
+      </header>
+
       {accountSwitched && <p>Account has been switched!</p>}
+      <div className="warning-message">
+        <p>Please save and store your generated DID in a safe location.</p>
+      </div>
+      <div className="d-flex justify-content-center align-items-center">
+        <p>Your DID: {did}</p>
+        <form className="form-inline" onSubmit={switchAccount}>
+          <div className="form-group mx-sm-3 mb-2">
+            <label htmlFor="didInput" className="sr-only">Paste your DID to switch accounts:</label>
+            <input type="text" className="form-control" id="didInput" placeholder="Paste your DID" value={userInput} onChange={handleInputChange} />
+          </div>
+          <button type="submit" className="btn btn-primary mb-2">Switch Account</button>
+        </form>
+        <button onClick={redirectToLeetMigo} className="btn btn-success mb-2 ml-2">Start Grinding, LeetMigo!</button>
+      </div>
     </div>
   );
 }
