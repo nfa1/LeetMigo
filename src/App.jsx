@@ -36,8 +36,8 @@ function App() {
   return (
     <div className="App d-flex flex-column vh-100 justify-content-center align-items-center text-center" style={{ backgroundColor: '#000', color: '#fff', width: '100%' }}>
       <header className="mb-4 w-100" style={{ backgroundColor: '#333' }}>
-        <h1>LeetMigo 🎮👾</h1>
-        <p className="tagline">Your based technical mock interviewer so that you can land that awesome software engineering job!</p>
+        <h1>LeetMigo 💻👾</h1> {/* Changed emoji to laptop */}
+        <p className="tagline">Your based Web5-pilled technical mock interviewer so that you can land that awesome software engineering job!⚛️🫡 </p> {/* Added salute emoji */}
       </header>
 
       {accountSwitched && <p>Account has been switched!</p>}
@@ -53,7 +53,7 @@ function App() {
           </div>
           <button type="submit" className="btn btn-primary mb-2">Switch Account</button>
         </form>
-        <button onClick={redirectToLeetMigo} className="btn btn-success mb-2 ml-2">Start Grinding, LeetMigo!</button>
+        <button onClick={redirectToLeetMigo} className="btn btn-success mb-2 ml-2">Start Grinding!</button>
       </div>
     </div>
   );
