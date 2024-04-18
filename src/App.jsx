@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // To simulate DID generation
 
+// did:dht
+import { DidDht } from '@web5/dids'
+
+//did:jwk
+import { DidJwk } from '@web5/dids'
+
 function App() {
   const [did, setDid] = useState('');
   const [userInput, setUserInput] = useState('');
   const [accountSwitched, setAccountSwitched] = useState(false);
 
-  // Simulate generating a DID upon navigating to the site
-  useEffect(() => {
-    const newDid = `did:example:${uuidv4()}`; // Generate a mock DID
-    setDid(newDid);
-  }, []);
+//Creates a DID using the did:jwk method
+const didJwk = await DidJwk.create();
+
+//DID and its associated data which can be exported and used in different contexts/apps
+const portableDid = didJwk.export()
+
+//DID string
+const did = didJwk.uri;
+
+//DID Document
+const didDocument = JSON.stringify(didJwk.document);
 
   // Handle user input for switching accounts
   const handleInputChange = (e) => {
