@@ -37,7 +37,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-LeetMigo Team - [email@leetmigo.com](mailto:email@leetmigo.com)
+
 Twitter - [@LeetMigo](https://twitter.com/leetmigo)
 
 ---
