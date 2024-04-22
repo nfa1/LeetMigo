@@ -17,7 +17,7 @@ LeetMigo is a platform that revolutionizes the way candidates prepare for softwa
 
 To start using LeetMigo, follow these steps:
 
-1. **Sign Up:** Register for an account [here](#).
+1. **Sign Up Instantly With No Login* Simply click on the link.
 2. **Set Your Goals:** Tell us your job aspirations and skills level.
 3. **Begin Interviewing:** Start your mock interviews and receive instant feedback.
 
