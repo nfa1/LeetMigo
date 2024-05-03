@@ -1,34 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { DidJwk } from '@web5/dids';
+import React, { useState, useEffect } from "react";
+import { DidJwk } from "@web5/dids";
 
 function App() {
-  const [did, setDid] = useState(''); // Full DID
-  const [shortDid, setShortDid] = useState(''); // Shortened DID for display
-  const [userInput, setUserInput] = useState('');
+  const [didInfo, setDidInfo] = useState({ full: "", short: ""});
+  const [userInput, setUserInfo] = useState("");
   const [accountSwitched, setAccountSwitched] = useState(false);
+  const [showDocument, setshowDocument] = useState(false);
 
   useEffect(() => {
-    const fetchDID = async () => {
-      const didJwk = await DidJwk.create();
-      setDid(didJwk.uri);
-      // Update the shortened DID display whenever the full DID changes
-      setShortDid(didJwk.uri.slice(0, 15) + '...'); // Adjust length as needed
+    const fetchInitialDID = async () => {
+      try {
+        const didJwk = await DidJwk.create();
+        const portableDid = didJwk.export();
+        const didDocument = JSON.stringify(did.Jwk.document, null, 2);
+        updateDID(didJwk.uri, portableDid, didDocument);
+      } catch (error) {
+        console.error('Failed to fetch initial DID:', error);
+      }
     };
-
-    fetchDID();
+    
+    fetchInitialDID();
   }, []);
+
+  const updateDID = (newDID, portable, document) => {
+    setDidInfo({
+      full: newDID,
+      short: `${newDID.slice(0,15)}...`,
+      document: document,
+      portable: portable
+     });
+  };
+
 
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
-    setAccountSwitched(false); // Reset account switched message when user edits input
+    if (accountSwitched) {
+      setAccountSwitched(false);
+    } // Reset only if needed
   };
 
   const switchAccount = (e) => {
     e.preventDefault();
-    if (userInput.trim() !== '') {
-      setDid(userInput.trim());
-      setShortDid(userInput.trim().slice(0, 15) + '...'); // Update shortened DID when user inputs a new one
+    if (userInput.trim()) {
+      updateDID(userInput.trim());
       setAccountSwitched(true);
     }
   };
@@ -37,28 +51,37 @@ function App() {
     window.location.href = "https://chat.openai.com/g/g-JD79hRxJc-leetmigo";
   };
 
+  const redirectToGoogleForm = () => {
+    window.location.href = "https://docs.google.com/forms/d/1eAAZa7Wc_snP0AhH2w6B3ewXh0_zbYd_zYcko_-f2IY/prefill";
+  };
+
   return (
-    <div className="App d-flex flex-column vh-100 justify-content-center align-items-center text-center" style={{ backgroundColor: '#000', color: '#fff', width: '100%' }}>
-      <header className="mb-4 w-100" style={{ backgroundColor: '#333' }}>
-        <h1>LeetMigo 💻👾</h1>
-        <p className="tagline">Your based Web5-pilled technical mock interviewer so that you can land that awesome software engineering job!⚛️🫡</p>
+    <div className="App d-flex flex-column vh-100 justify-content-center align-items-center text-center"
+      style={{ backgroundColor: "#000", color: "#fff", width: "100%" }}>
+      <header className="mb-4 w-100" style={{ backgroundColor: "#333" }}>
+        <h1>LeetMigo 👾</h1>
+        <p>Your based Web5-pilled technical mock interviewer so that you can land that awesome software engineering job! ⚛️🫡</p>
       </header>
 
-      {accountSwitched && <p>Account has been switched!</p>}
-      <div className="warning-message">
-        <p>Please save and store your generated DID in a safe location.</p>
-      </div>
-      <div className="d-flex justify-content-center align-items-center">
-        <p>Your DID: {shortDid}</p>
-        <form className="form-inline" onSubmit={switchAccount}>
-          <div className="form-group mx-sm-3 mb-2">
-            <label htmlFor="didInput" className="sr-only">Paste your DID to switch accounts:</label>
-            <input type="text" className="form-control" id="didInput" placeholder="Paste your DID" value={userInput} onChange={handleInputChange} />
-          </div>
-          <button type="submit" className="btn btn-primary mb-2">Switch Account</button>
-        </form>
-        <button onClick={redirectToLeetMigo} className="btn btn-success mb-2 ml-2">Start Grinding!</button>
-      </div>
+      {accountSwitched && <p>Account successfully switched.</p>}
+
+      <form onSubmit={switchAccount}>
+        <input
+          type="text"
+          value={userInput}
+          onChange={handleInputChange}
+          placeholder="Enter new DID"
+          style={{ margin: "10px" }}
+        />
+        <button type="submit">Switch Account</button>
+      </form>
+
+      <button onClick={redirectToGoogleForm} style={{ marginTop: "20px" }}>
+        Go to Survey - Complete for Free access!
+      </button>
+      <button onClick={redirectToLeetMigo} style={{ marginTop: "20px" }}>
+        Go to LeetMigo Custom GPT
+      </button>
     </div>
   );
 }
