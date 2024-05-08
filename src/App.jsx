@@ -62,7 +62,7 @@ function App() {
         style={{ backgroundColor: "#000", color: "#fff", width: "100%" }}>
         <header className="mb-4 w-100" style={{ backgroundColor: "#333" }}>
           <h1>LeetMigo 👾</h1>
-          <p>Your based Web5 pilled tech interview prep platform so that you can land that awesome software engineering job! ⚛️🫡</p>
+          <p>Your portable decentralized tech interview prep platform so that you can land that awesome software engineering job! ⚛️🫡</p>
         </header>
 
         {accountSwitched && <p>Account successfully switched.</p>}
