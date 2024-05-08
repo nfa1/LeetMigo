@@ -1,4 +1,4 @@
-# [LeetMigo](https://leetmigo.web.app/)👾
+# [LeetMigo](https://leetmigo.com/)👾
 
 Welcome to [LeetMigo](https://leetmigo.com/) — the future of tech interview preparation. Developed with the latest Web5 technology, LeetMigo is your gateway to securing top-tier software engineering roles.
 
