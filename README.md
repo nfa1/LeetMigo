@@ -4,7 +4,7 @@ Welcome to [LeetMigo](https://leetmigo.web.app/) — the future of tech intervie
 
 ## Overview
 
-[LeetMigo](https://leetmigo.web.app/) is a platform that revolutionizes the way candidates prepare for software engineering interviews. By leveraging the capabilities of Web5, we provide a unique mock interviewing experience that not only sharpens technical skills but also boosts confidence, ensuring you stand out in the competitive tech industry.
+[LeetMigo](https://leetmigo.web.app/) is a platform that revolutionizes the way candidates prepare for software engineering interviews. By leveraging the capabilities of Web5, we provide a unique tech interviewing prep experience that not only sharpens technical skills but also boosts confidence, ensuring you stand out in the competitive tech industry.
 
 ## Features
 
