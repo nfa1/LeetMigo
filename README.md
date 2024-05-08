@@ -23,9 +23,9 @@ To start using LeetMigo, follow these steps:
 
 ## Testimonials
 
-> "LeetMigo helped me land a job at a FAANG company with its rigorous mock interviews and detailed feedback." - **Jane Doe**
+> "LeetMigo helped me land a job at a FAANG company with its rigorous mock interviews and detailed feedback." - **Aubrey Graham**
 
-> "The real-time feedback feature is a game-changer! It really helped me understand my weaknesses." - **John Smith**
+> "The real-time feedback feature is a game-changer! It really helped me understand my weaknesses." - **Kendrick Lamar**
 
 ## Contributing
 
