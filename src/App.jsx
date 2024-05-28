@@ -1,91 +1,77 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { AuthProvider } from './AuthContext.jsx';
-//import { DIDAuth } from './DIDAuth.jsx';
-import { DidJwk } from "@web5/dids";
+import React, { useState } from 'react';
+import './App.css'; // Assume you have a CSS file for styling
 
 function App() {
-  const [didInfo, setDidInfo] = useState({ full: "", short: "", document: "", portable: ""});
-  const [userInput, setUserInput] = useState("");
-  const [accountSwitched, setAccountSwitched] = useState(false);
-
-  useEffect(() => {
-    const fetchInitialDID = async () => {
-      try {
-        const didJwk = await DidJwk.create();
-        const portableDid = await didJwk.export();
-        const didDocument = JSON.stringify(didJwk.document, null, 2);
-        updateDID(didJwk.uri, portableDid, didDocument);
-      } catch (error) {
-        console.error('Failed to fetch initial DID:', error);
-      }
-    };
-
-    fetchInitialDID();
-  }, []);
-
-  const updateDID = (newDID, portable = "", document = "") => {
-    setDidInfo({
-      full: newDID,
-      short: `${newDID.slice(0,15)}...`,
-      document: document,
-      portable: portable
-     });
-  };
+  const [email, setEmail] = useState('');
 
   const handleInputChange = (e) => {
-    setUserInput(e.target.value);
-    if (accountSwitched) {
-      setAccountSwitched(false);
-    }
+    setEmail(e.target.value);
   };
 
-  const switchAccount = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (userInput.trim()) {
-      updateDID(userInput.trim());
-      setAccountSwitched(true);
-    }
+    console.log('Email submitted:', email);
+    // Add logic for handling email submission
   };
-
-  const redirectToLeetMigo = useCallback(() => {
-    window.location.href = "https://chat.openai.com/g/g-JD79hRxJc-leetmigo";
-  }, []);
-
-  const redirectToGoogleForm = useCallback(() => {
-    window.location.href = "https://docs.google.com/forms/d/1eAAZa7Wc_snP0AhH2w6B3ewXh0_zbYd_zYcko_-f2IY/prefill";
-  }, []);
 
   return (
-    <AuthProvider>
-      <DIDAuth />
-      <div className="App d-flex flex-column vh-100 justify-content-center align-items-center text-center"
-        style={{ backgroundColor: "#000", color: "#fff", width: "100%" }}>
-        <header className="mb-4 w-100" style={{ backgroundColor: "#333" }}>
-          <h1>LeetMigo 👾</h1>
-          <p>Your portable decentralized tech interview prep platform so that you can land that awesome software engineering job! ⚛️🫡</p>
-        </header>
-
-        {accountSwitched && <p>Account successfully switched.</p>}
-
-        <form onSubmit={switchAccount}>
-          <input
-            type="text"
-            value={userInput}
-            onChange={handleInputChange}
-            placeholder="Enter new DID"
-            style={{ margin: "10px" }}
-          />
-          <button type="submit">Switch Account</button>
-        </form>
-
-        <button onClick={redirectToGoogleForm} style={{ marginTop: "20px" }}>
-          Go to Survey - Complete for Free access!
-        </button>
-        <button onClick={redirectToLeetMigo} style={{ marginTop: "20px" }}>
-          Go to LeetMigo Custom GPT
-        </button>
+    <div className="app-container">
+      <div className="header">
+        <img src="C:\Users\Fabian\OneDrive - Eastern Gateway Community College\Leetmigo\LeetMigo\public" alt="LeetMigo Logo" className="logo" />
+        <div className="header-buttons">
+          <button className="header-button">Learn</button>
+          <button className="header-button">Connect Wallet</button>
+        </div>
       </div>
-    </AuthProvider>
+      <form className="email-form" onSubmit={handleSubmit}>
+        <label htmlFor="email" className="form-label">
+          What's your email address?*
+        </label>
+        <p className="form-subtext">
+          So we can make sure you get placed on the LeetMigo waitlist for early free access! By signing up you accept our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>
+        </p>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={handleInputChange}
+          placeholder="name@example.com"
+          className="email-input"
+          required
+        />
+        <button type="submit" className="submit-button">
+          OK
+        </button>
+      </form>
+      <div className="content">
+        <div className="category">
+          <h2>Coding & Startups</h2>
+          <div className="card-container">
+            <div className="card">Lesson 1: Learning & Motivation</div>
+            <div className="card">Lesson 2: Frontend Programming</div>
+            <div className="card">Lesson 3: Backend Connections</div>
+            <div className="card">Lesson 4: Building Apps</div>
+            <div className="card">Lesson 5: Computer Science</div>
+          </div>
+        </div>
+        <div className="category">
+          <h2>Communications</h2>
+          <div className="card-container">
+            <div className="card">Philosophy & Role</div>
+            <div className="card">Interactions & Design</div>
+            <div className="card">The Psychology of the System</div>
+          </div>
+        </div>
+        <div className="category">
+          <h2>Investing & Business</h2>
+          <div className="card-container">
+            <div className="card">Resume Writing</div>
+            <div className="card">Focus & Investing</div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
+
 export default App;
