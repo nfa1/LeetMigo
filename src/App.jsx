@@ -26,6 +26,7 @@ function App() {
   const [uniqueId, setUniqueId] = useState(localStorage.getItem('uniqueId') || '');
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState('');
+  const [gdprAccepted, setGdprAccepted] = useState(false);
 
   const createWebNode = useCallback(async () => {
     try {
@@ -76,16 +77,19 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform";
+    // Add form submission logic here
   };
 
   const handleFileChange = (e) => {
-    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform";
     setFile(e.target.files[0]);
   };
 
   const encryptAndUploadFile = (e) => {
-    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform";
+    // Add file encryption and upload logic here
+  };
+
+  const handleGdprAccept = () => {
+    setGdprAccepted(true);
   };
 
   return (
@@ -93,17 +97,13 @@ function App() {
       <div className="header">
         <div className="header-content">
           <h1 className="logo">LeetMigo 👾</h1>
-          <p className="description">A DSA interview preparation platform for non-traditional, cracked candidates seeking software engineering jobs.</p>
-          <div className="header-links">
-            <button className="link-button" onClick={() => window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform"}>Learn</button>
-            <button className="link-button" onClick={() => window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform"}>Connect Wallet</button>
-          </div>
+          <p className="description">the world's first decentralized platform for dsa interview prep, made for non-trad, cracked techies and frens</p>
         </div>
       </div>
 
       <div className="form-container">
-        <h2 className="form-title">What's your email address?*</h2>
-        <p className="form-description">Get on the LeetMigo waitlist for early access! *By signing up you accept our <a href="https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform" className="link">Terms of Use</a> and <a href="https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform" className="link">Privacy Policy</a></p>
+        <h2 className="form-title">What's your email?*</h2>
+        <p className="form-description">Join the LeetMigo waitlist! *By signing up, you accept our <a href="#" className="link">Terms</a> and <a href="#" className="link">Privacy Policy</a></p>
         <input
           type="email"
           id="email"
@@ -116,17 +116,22 @@ function App() {
         <button type="submit" className="submit-button" onClick={handleSubmit}>OK</button>
       </div>
 
-      {fileError && (
-        <div className="alert">
-          <span className="alert-icon">⚠️</span>
-          {fileError}
+      <p className="coming-soon">Features coming soon:</p>
+      <button className="survey-button" onClick={() => window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform"}>User Feedback Survey</button>
+      <button className="link-button">Learn</button>
+      <button className="upload-button" onClick={encryptAndUploadFile}>Upload and Encrypt</button>
+      <button className="link-button">Connect Wallet</button>
+      
+      {!gdprAccepted && (
+        <div className="gdpr-container">
+          <p className="gdpr-text">We use cookies for a based experience. Continue to use this site and we'll assume you think it's kino.</p>
+          <div className="gdpr-buttons">
+            <button className="gdpr-button" onClick={handleGdprAccept}>Ok</button>
+            <button className="gdpr-button" onClick={() => alert('Please accept the GDPR terms.')}>No</button>
+            <button className="gdpr-button" onClick={() => window.location.href = '/privacy-policy'}>Privacy policy</button>
+          </div>
         </div>
       )}
-      <input type="file" onChange={handleFileChange} className="file-input" />
-      <button className="upload-button" onClick={encryptAndUploadFile}>Upload and Encrypt</button>
-      
-      {/* LaunchList widget */}
-      <div className="launchlist-widget" data-key-id="pI1JRr" data-height="180px"></div>
     </div>
   );
 }

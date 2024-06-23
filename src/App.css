@@ -1,130 +1,181 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #FFFFFF;
-  color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f4f4;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+  padding: 10px;
+  position: relative; /* Ensure relative positioning */
+  min-height: 100vh; /* Ensure container takes full height */
+  box-sizing: border-box;
+  padding-bottom: 100px; /* Space for GDPR banner */
 }
 
 .header {
-  background-color: #FFD700;
-  width: 100%;
-  padding: 20px;
+  background-color: #f7931a; /* Bitcoin orange */
+  padding: 10px;
+  color: white;
   text-align: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
 }
 
 .header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #FF4500;
+  font-size: 2em;
 }
 
 .description {
-  font-size: 18px;
-  font-weight: bold;
-  color: #000000;
-  margin: 0 20px;
-}
-
-.header-links {
-  display: flex;
-  gap: 10px;
-}
-
-.link-button {
-  background: none;
-  border: none;
-  color: #000000;
-  font-size: 16px;
-  cursor: pointer;
-  text-decoration: underline;
+  font-size: 1em;
 }
 
 .form-container {
-  background-color: #F0E68C;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  margin: 20px auto;
   text-align: center;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 20px;
 }
 
 .form-title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #FF4500;
-  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: #f7931a; /* Bitcoin orange */
 }
 
 .form-description {
-  font-size: 14px;
-  color: #808080;
-  margin-bottom: 10px;
-}
-
-.link {
-  color: #0000FF;
-  text-decoration: none;
+  font-size: 0.8em;
+  margin: 10px 0;
+  color: #4d4d4d; /* Bitcoin dark grey */
 }
 
 .input-field {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #CCCCCC;
-  border-radius: 4px;
+  width: 80%;
+  max-width: 300px;
+  padding: 8px;
+  margin: 8px auto;
+  display: block;
 }
 
 .submit-button {
-  background-color: #008000;
-  color: #FFFFFF;
-  padding: 10px 20px;
+  background-color: #4d4d4d; /* Bitcoin dark grey */
   border: none;
-  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
   cursor: pointer;
+  display: block;
+  margin: 0 auto;
 }
 
-.alert {
-  background-color: #FFCCCC;
-  color: #CC0000;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.alert-icon {
-  margin-right: 10px;
-}
-
-.file-input {
-  margin-bottom: 10px;
+.submit-button:hover {
+  background-color: #3b3b3b; /* Darker grey */
 }
 
 .upload-button {
-  background-color: #FFA500;
-  color: #000000;
-  padding: 10px 20px;
-  border: 2px solid #FFA500;
-  border-radius: 4px;
+  background-color: #4d4d4d; /* Bitcoin dark grey */
+  border: none;
+  color: white;
+  padding: 8px 16px;
   cursor: pointer;
+  display: block;
+  margin: 20px auto; /* Adding margin to separate from OK button */
+  text-align: center;
+}
+
+.upload-button:hover {
+  background-color: #3b3b3b; /* Darker grey */
+}
+
+.coming-soon {
+  text-align: center;
+  margin-top: 20px;
+  color: #4d4d4d; /* Bitcoin dark grey */
+}
+
+.survey-button {
+  background-color: #f7931a; /* Bitcoin orange */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto; /* Adding margin to separate from other buttons */
+  text-align: center;
+}
+
+.survey-button:hover {
+  background-color: #e67e22; /* Darker orange */
+}
+
+.link-button {
+  background-color: #4d4d4d; /* Bitcoin dark grey */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto; /* Adding margin to separate from other buttons */
+  text-align: center;
+}
+
+.link-button:hover {
+  background-color: #3b3b3b; /* Darker grey */
+}
+
+.gdpr-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f7931a; /* Bitcoin orange */
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.gdpr-text {
+  margin: 10px 0;
+  font-size: 0.75em; /* Fine print size */
+}
+
+.gdpr-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gdpr-button {
+  background-color: #4d4d4d; /* Bitcoin dark grey */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.gdpr-button:hover {
+  background-color: #3b3b3b; /* Darker grey */
+}
+
+@media (min-width: 600px) {
+  .container {
+    padding: 20px;
+    padding-bottom: 100px; /* Space for GDPR banner */
+  }
+  .header-content {
+    max-width: 800px;
+  }
+  .logo {
+    font-size: 2.5em;
+  }
+  .description {
+    font-size: 1.2em;
+  }
+  .header-links {
+    margin-top: 20px;
+  }
+  .link-button {
+    padding: 10px 20px;
+  }
 }
