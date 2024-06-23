@@ -75,11 +75,6 @@ function App() {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add form submission logic here
-  };
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -104,20 +99,28 @@ function App() {
       <div className="form-container">
         <h2 className="form-title">What's your email?*</h2>
         <p className="form-description">Join the LeetMigo waitlist! *By signing up, you accept our <a href="#" className="link">Terms</a> and <a href="#" className="link">Privacy Policy</a></p>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleInputChange}
-          placeholder="name@example.com"
-          required
-          className="input-field"
-        />
-        <button type="submit" className="submit-button" onClick={handleSubmit}>OK</button>
+        <form className="launchlist-form" action="https://getlaunchlist.com/s/pI1JRr" method="POST">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your name"
+            className="input-field"
+          />
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleInputChange}
+            placeholder="name@example.com"
+            required
+            className="input-field"
+          />
+          <button type="submit" className="submit-button">Sign Up</button>
+        </form>
       </div>
 
-      <p className="coming-soon">Features coming soon:</p>
       <button className="survey-button" onClick={() => window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSeArNtgtrssOytNTt39Hs78UFUq1FgLwQlKNNZ5gzvIbjPnXg/viewform"}>User Feedback Survey</button>
+      <p className="coming-soon">Features coming soon:</p>
       <button className="link-button">Learn</button>
       <button className="upload-button" onClick={encryptAndUploadFile}>Upload and Encrypt</button>
       <button className="link-button">Connect Wallet</button>

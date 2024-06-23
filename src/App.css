@@ -59,6 +59,12 @@ body {
   display: block;
 }
 
+.error-text {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
 .submit-button {
   background-color: #4d4d4d; /* Bitcoin dark grey */
   border: none;
