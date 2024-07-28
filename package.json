@@ -16,7 +16,7 @@
     "@web5/api": "^0.8.4",
     "@web5/dids": "^1.0.0",
     "axios": "^1.6.8",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^3.4.1",
     "crypto-js": "^4.2.0",
     "firebase": "^10.12.2",
     "framer-motion": "^11.2.10",
