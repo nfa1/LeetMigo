@@ -132,7 +132,7 @@
           <div className="gdpr-container">
             <p className="gdpr-text">We use cookies for a based experience. Continue to use this site and we'll assume you think it's kino.</p>
             <div className="gdpr-buttons">
-              <button className="gdpr-button" onClick={handleGdprAccept}>Ok</button>
+              <button className="gdpr-button" onClick={handleGdprAccept}>OK</button>
               <button className="gdpr-button" onClick={() => alert('Please accept the GDPR terms.')}>No</button>
               <button className="gdpr-button" onClick={() => window.location.href = '/privacy-policy'}>Privacy policy</button>
             </div>
