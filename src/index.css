@@ -1,72 +1,95 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.App {
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-a {
-  font-weight: 500;
-  color: #1E90FF; /* Secondary Blue */
-  text-decoration: inherit;
-}
-a:hover {
-  color: #FF69B4; /* Accent Pink */
+.input-field {
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.error-message {
+  color: red;
+  font-size: 0.9em;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  color: #FFD700; /*Primary Yellow */
+.loading-spinner {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.gdpr-banner {
+  background-color: #f8f9fa;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #E60012; /* Primary Red */
-  color: #fff
+  margin: 5px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.3s ease;
 }
+
 button:hover {
-  border-color: #32CD32; /* Secondary Green */
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  background-color: #0056b3;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .App {
+    padding: 10px;
   }
-  a:hover {
-    color: #1E90FF; /*Secondary Blue */
+
+  .input-field, button {
+    width: 100%;
   }
-  button {
-    background-color: #FFD700; /* Primary Yellow */
-    color: #213547; /* Darker color for contrast */
+
+  .responsive-box {
+    padding: 15px;
+  }
+
+  .text-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .text-content p {
+    font-size: 1rem;
   }
 }
 
+/* Added styles from the previous output */
+
+/* Text Box Style */
+.text-box {
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white box */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
+}
+
+/* Text Content Style */
+.text-content {
+  color: #000; /* Ensure text is dark */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+}

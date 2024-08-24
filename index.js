@@ -1,14 +1,20 @@
-import { Web5 } from '@web5/api'
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import theme from './theme';
 
-const { web5, did: aliceDid } = await Web5.connect();
+const container = document.getElementById('root');
+const root = createRoot(container);
 
-  // Create the record
-  const { record } = await web5.dwn.records.create({
-    data: 'Hello Web5',
-    message: {
-      dataFormat: 'text/plain',
-    },
-  });
-
-  // Read the record
-  const readResult = await record.data.text();
+root.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+      </ChakraProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);

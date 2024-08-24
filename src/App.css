@@ -1,187 +1,83 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f4f4f4;
-}
-
-.container {
-  padding: 10px;
-  position: relative; /* Ensure relative positioning */
-  min-height: 100vh; /* Ensure container takes full height */
-  box-sizing: border-box;
-  padding-bottom: 100px; /* Space for GDPR banner */
-}
-
-.header {
-  background-color: #f7931a; /* Bitcoin orange */
-  padding: 10px;
-  color: white;
+.App {
   text-align: center;
-}
-
-.header-content {
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-.logo {
-  font-size: 2em;
-}
-
-.description {
-  font-size: 1em;
-}
-
-.form-container {
-  max-width: 100%;
-  margin: 20px auto;
-  text-align: center;
-}
-
-.form-title {
-  font-size: 1.2em;
-  color: #f7931a; /* Bitcoin orange */
-}
-
-.form-description {
-  font-size: 0.8em;
-  margin: 10px 0;
-  color: #4d4d4d; /* Bitcoin dark grey */
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .input-field {
-  width: 80%;
-  max-width: 300px;
+  margin: 10px 0;
   padding: 8px;
-  margin: 8px auto;
-  display: block;
+  width: 100%;
+  max-width: 300px;
 }
 
-.error-text {
+.error-message {
   color: red;
-  font-size: 0.8em;
-  margin-top: 5px;
+  font-size: 0.9em;
 }
 
-.submit-button {
-  background-color: #4d4d4d; /* Bitcoin dark grey */
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  cursor: pointer;
-  display: block;
-  margin: 0 auto;
+.loading-spinner {
+  color: #007bff;
+  font-weight: bold;
 }
 
-.submit-button:hover {
-  background-color: #3b3b3b; /* Darker grey */
-}
-
-.upload-button {
-  background-color: #4d4d4d; /* Bitcoin dark grey */
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  cursor: pointer;
-  display: block;
-  margin: 20px auto; /* Adding margin to separate from OK button */
-  text-align: center;
-}
-
-.upload-button:hover {
-  background-color: #3b3b3b; /* Darker grey */
-}
-
-.coming-soon {
-  text-align: center;
+.gdpr-banner {
+  background-color: #f8f9fa;
+  padding: 10px;
   margin-top: 20px;
-  color: #4d4d4d; /* Bitcoin dark grey */
-}
-
-.survey-button {
-  background-color: #f7931a; /* Bitcoin orange */
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  cursor: pointer;
-  display: block;
-  margin: 20px auto; /* Adding margin to separate from other buttons */
-  text-align: center;
-}
-
-.survey-button:hover {
-  background-color: #e67e22; /* Darker orange */
+  border-radius: 5px;
 }
 
 .link-button {
-  background-color: #4d4d4d; /* Bitcoin dark grey */
+  background: none;
   border: none;
-  color: white;
-  padding: 8px 16px;
-  cursor: pointer;
-  display: block;
-  margin: 10px auto; /* Adding margin to separate from other buttons */
-  text-align: center;
-}
-
-.link-button:hover {
-  background-color: #3b3b3b; /* Darker grey */
-}
-
-.gdpr-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #f7931a; /* Bitcoin orange */
-  color: white;
-  text-align: center;
-  padding: 10px;
-}
-
-.gdpr-text {
-  margin: 10px 0;
-  font-size: 0.75em; /* Fine print size */
-}
-
-.gdpr-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.gdpr-button {
-  background-color: #4d4d4d; /* Bitcoin dark grey */
-  border: none;
-  color: white;
-  padding: 8px 16px;
+  color: blue;
+  text-decoration: underline;
   cursor: pointer;
 }
 
-.gdpr-button:hover {
-  background-color: #3b3b3b; /* Darker grey */
+button {
+  margin: 5px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-@media (min-width: 600px) {
-  .container {
-    padding: 20px;
-    padding-bottom: 100px; /* Space for GDPR banner */
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .App {
+    padding: 10px;
   }
-  .header-content {
-    max-width: 800px;
+
+  .input-field, button {
+    width: 100%;
   }
-  .logo {
-    font-size: 2.5em;
-  }
-  .description {
-    font-size: 1.2em;
-  }
-  .header-links {
-    margin-top: 20px;
-  }
-  .link-button {
-    padding: 10px 20px;
-  }
+}
+
+/* Added styles from the previous output */
+
+/* Text Box Style */
+.text-box {
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white box */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
+}
+
+/* Text Content Style */
+.text-content {
+  color: #000; /* Ensure text is dark */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
 }
