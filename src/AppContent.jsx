@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -6,7 +6,6 @@ import {
   Text,
   Input,
   Image,
-  Collapse,
   HStack,
   useToast,
   Modal,
@@ -16,6 +15,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Container,
 } from '@chakra-ui/react';
 import bannerImage from './LeetMigo_banner_main_01.png';
 
@@ -43,98 +43,100 @@ const AppContent = () => {
     localStorage.setItem('gdprAccepted', 'true');
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const accepted = localStorage.getItem('gdprAccepted');
     if (accepted) setGdprAccepted(true);
   }, []);
 
   return (
-    <Box minH="100vh" color="white" bg="gray.900" position="relative" px={{ base: 4, md: 8 }} pb={{ base: 16, md: 20 }}>
-      <VStack spacing={{ base: 6, md: 8 }} align="center" justify="center" maxW="lg" mx="auto" mt={8}>
-        
-        {/* LeetMigo Header and Description */}
-        <Box textAlign="center" mb={{ base: 4, md: 6 }}>
-          <Text fontSize={{ base: '2xl', md: '4xl' }} fontWeight="bold" lineHeight="shorter">
-            LeetMigo 👾
-          </Text>
-          <Text fontSize={{ base: 'md', md: 'lg' }} mt={2} lineHeight="normal">
-            the world's first decentralized platform for dsa interview prep, made for non-trad, cracked techies and frens
-          </Text>
-        </Box>
+    <Box minH="100vh" color="white" bg="gray.900" position="relative">
+      <Container maxW="container.xl" pt={{ base: 16, md: 20 }} px={{ base: 4, md: 8 }} pb={{ base: 24, md: 20 }}>
+        <VStack spacing={{ base: 8, md: 12 }} align="center" justify="center">
+          
+          {/* LeetMigo Header and Description */}
+          <Box textAlign="center">
+            <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="bold" lineHeight="shorter">
+              LeetMigo 👾
+            </Text>
+            <Text fontSize={{ base: 'md', md: 'lg' }} mt={4} lineHeight="tall">
+              the world's first decentralized platform for dsa interview prep, made for non-trad, cracked techies and frens
+            </Text>
+          </Box>
 
-        {/* Banner Image */}
-        <Box width="100%" mb={8} maxH={{ base: '200px', md: '300px', lg: '400px' }}>
-          <Image 
-            src={bannerImage} 
-            alt="LeetMigo Banner" 
-            width="100%" 
-            height="auto" 
-            objectFit="cover" 
-            maxH="100%"
-            loading="lazy"
-          />
-        </Box>
-
-        {/* Waitlist Form */}
-        <Box width="100%" textAlign="center">
-          <Text fontSize="xl" fontWeight="bold" mb={4}>
-            join the waitlist for free early access
-          </Text>
-          <form onSubmit={handleSubmit}>
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="your name"
-              textAlign="center"
-              mb={4}
-              color="black"
-              required
+          {/* Banner Image */}
+          <Box width="100%" maxH={{ base: '200px', md: '300px', lg: '400px' }}>
+            <Image 
+              src={bannerImage} 
+              alt="LeetMigo Banner" 
+              width="100%" 
+              height="auto" 
+              objectFit="cover" 
+              maxH="100%"
+              loading="lazy"
             />
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com"
-              textAlign="center"
-              mb={4}
-              color="black"
-              required
-            />
-            <Button type="submit" width="auto" colorScheme="blue" mx="auto">
-              sign up
-            </Button>
-          </form>
-        </Box>
+          </Box>
 
-        {/* Free LeetCode Grind 75 Study Spreadsheet Button */}
-        <Box textAlign="center" mt={8}>
-          <a
-            href="https://docs.google.com/spreadsheets/d/1v0OCKeLa9q8douuR6RQmQ5mOG2piThh50wuGA79g2SY/edit?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button colorScheme="green" size="lg">
-              Free LeetCode Grind 75 Study Spreadsheet
-            </Button>
-          </a>
-        </Box>
+          {/* Waitlist Form */}
+          <Box width="100%" textAlign="center">
+            <Text fontSize="xl" fontWeight="bold" mb={4}>
+              join the waitlist for free early access
+            </Text>
+            <form onSubmit={handleSubmit}>
+              <VStack spacing={4}>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="your name"
+                  textAlign="center"
+                  color="black"
+                  required
+                />
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  textAlign="center"
+                  color="black"
+                  required
+                />
+                <Button type="submit" width="auto" colorScheme="blue">
+                  sign up
+                </Button>
+              </VStack>
+            </form>
+          </Box>
 
-        {/* Features Coming Soon */}
-        <VStack align="center" mt={8}>
-          <Text fontSize="lg" fontWeight="bold" textAlign="center">
-            features coming soon:
-          </Text>
-          <HStack spacing={4} justify="center">
-            <Button variant="outline" colorScheme="blue">
-              learn
-            </Button>
-            <Button variant="outline" colorScheme="blue">
-              collab
-            </Button>
-          </HStack>
+          {/* Free LeetCode Grind 75 Study Spreadsheet Button */}
+          <Box textAlign="center">
+            <a
+              href="https://docs.google.com/spreadsheets/d/1v0OCKeLa9q8douuR6RQmQ5mOG2piThh50wuGA79g2SY/edit?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button colorScheme="green" size="lg">
+                Free LeetCode Grind 75 Study Spreadsheet
+              </Button>
+            </a>
+          </Box>
+
+          {/* Features Coming Soon */}
+          <VStack align="center">
+            <Text fontSize="lg" fontWeight="bold" textAlign="center">
+              features coming soon:
+            </Text>
+            <HStack spacing={4} justify="center">
+              <Button variant="outline" colorScheme="blue">
+                learn
+              </Button>
+              <Button variant="outline" colorScheme="blue">
+                collab
+              </Button>
+            </HStack>
+          </VStack>
         </VStack>
-      </VStack>
+      </Container>
 
       {/* GDPR Banner */}
       {!gdprAccepted && (
@@ -145,19 +147,22 @@ const AppContent = () => {
           bg="orange.400"
           color="gray.800"
           py={3}
+          px={4}
           textAlign="center"
           zIndex={1000}
         >
           <Text mb={2}>we use cookies for a based experience. continue to use this site and we'll assume you think it's kino.</Text>
-          <Button size="sm" colorScheme="gray" mr={2} onClick={handleGdprAccept}>
-            ok
-          </Button>
-          <Button size="sm" colorScheme="gray" mr={2} onClick={() => alert('please accept the gdpr terms (grudgingly).')}>
-            no
-          </Button>
-          <Button size="sm" colorScheme="gray" variant="outline" onClick={() => setIsPrivacyPolicyOpen(true)}>
-            privacy policy
-          </Button>
+          <HStack spacing={2} justify="center">
+            <Button size="sm" colorScheme="gray" onClick={handleGdprAccept}>
+              ok
+            </Button>
+            <Button size="sm" colorScheme="gray" onClick={() => alert('please accept the gdpr terms (grudgingly).')}>
+              no
+            </Button>
+            <Button size="sm" colorScheme="gray" variant="outline" onClick={() => setIsPrivacyPolicyOpen(true)}>
+              privacy policy
+            </Button>
+          </HStack>
         </Box>
       )}
 
