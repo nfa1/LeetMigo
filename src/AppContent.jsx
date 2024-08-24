@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   Button,
   VStack,
   Text,
-  Input,
   Image,
   HStack,
-  useToast,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -21,22 +19,9 @@ import {
 import bannerImage from './LeetMigo_banner_main_01.png';
 
 const AppContent = () => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
   const [gdprAccepted, setGdprAccepted] = useState(false);
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
-  const toast = useToast();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    toast({
-      title: "Waitlist Joined!",
-      description: "You've successfully joined the waitlist.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-  };
+  const widgetRef = useRef(null);
 
   const handleGdprAccept = () => {
     setGdprAccepted(true);
@@ -48,12 +33,34 @@ const AppContent = () => {
     if (accepted) setGdprAccepted(true);
   }, []);
 
+  useEffect(() => {
+    if (!widgetRef.current) {
+      const script = document.createElement('script');
+      script.src = 'https://getlaunchlist.com/js/widget.js';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if (window.LaunchListWidget) {
+          window.LaunchListWidget.init();
+          widgetRef.current = true;
+        }
+      };
+      document.body.appendChild(script);
+
+      return () => {
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      };
+    }
+  }, []);
+
   // Set a consistent max width for all buttons
-  const buttonMaxWidth = { base: '100%', md: '300px' };
+  const buttonSizeProps = { width: '100%', maxW: { base: '100%', md: '300px' } };
 
   return (
     <Box minH="100vh" color="white" bg="gray.900" position="relative">
-      <Container maxW="container.md" pt={8} px={4} pb={16}>
+      <Container maxW="container.md" pt={8} px={{ base: 4, md: 8 }} pb={16}>
         <VStack spacing={8} align="center" justify="center">
           
           {/* LeetMigo Header and Description */}
@@ -67,7 +74,7 @@ const AppContent = () => {
           </Box>
 
           {/* Banner Image with Aspect Ratio */}
-          <AspectRatio ratio={16 / 9} width="100%" borderRadius="md">
+          <AspectRatio ratio={16 / 9} width="100%" maxW="800px" borderRadius="md">
             <Image 
               src={bannerImage} 
               alt="LeetMigo Banner" 
@@ -76,44 +83,21 @@ const AppContent = () => {
             />
           </AspectRatio>
 
-          {/* Waitlist Form */}
-          <VStack as="form" onSubmit={handleSubmit} width="100%" spacing={4} textAlign="center">
-            <Text fontSize="lg" fontWeight="bold">
-              join the waitlist for free early access
-            </Text>
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="your name"
-              textAlign="center"
-              color="black"
-              required
-            />
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com"
-              textAlign="center"
-              color="black"
-              required
-            />
-            <Button type="submit" colorScheme="blue" width="100%" maxW={buttonMaxWidth}>
-              sign up
-            </Button>
-          </VStack>
+          {/* Waitlist Form (GetLaunchList Widget) */}
+          <Box width="100%" maxW="400px">
+            <div className="launchlist-widget" data-key-id="pI1JRr" data-height="180px"></div>
+          </Box>
 
           {/* Free LeetCode Grind 75 Study Spreadsheet Button */}
           <Button 
             as="a" 
             href="https://docs.google.com/spreadsheets/d/1v0OCKeLa9q8douuR6RQmQ5mOG2piThh50wuGA79g2SY/edit?usp=sharing" 
-            colorScheme="green" 
+            variant="outline"
+            colorScheme="blue"
             size="lg" 
             target="_blank" 
             rel="noopener noreferrer" 
-            width="100%" 
-            maxW={buttonMaxWidth}
+            {...buttonSizeProps}
           >
             Free LeetCode Grind 75 Study Spreadsheet
           </Button>
@@ -124,10 +108,10 @@ const AppContent = () => {
               features coming soon:
             </Text>
             <HStack spacing={4} justify="center" width="100%">
-              <Button variant="outline" colorScheme="blue" width="100%" maxW={buttonMaxWidth}>
+              <Button variant="outline" colorScheme="blue" {...buttonSizeProps}>
                 learn
               </Button>
-              <Button variant="outline" colorScheme="blue" width="100%" maxW={buttonMaxWidth}>
+              <Button variant="outline" colorScheme="blue" {...buttonSizeProps}>
                 collab
               </Button>
             </HStack>
@@ -183,4 +167,4 @@ const AppContent = () => {
   );
 };
 
-export default AppContent;
+export { AppContent as default };
