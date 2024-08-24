@@ -16,6 +16,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Container,
+  AspectRatio,
 } from '@chakra-ui/react';
 import bannerImage from './LeetMigo_banner_main_01.png';
 
@@ -28,7 +29,6 @@ const AppContent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add form submission logic here
     toast({
       title: "Waitlist Joined!",
       description: "You've successfully joined the waitlist.",
@@ -48,14 +48,17 @@ const AppContent = () => {
     if (accepted) setGdprAccepted(true);
   }, []);
 
+  // Set a consistent max width for all buttons
+  const buttonMaxWidth = { base: '100%', md: '300px' };
+
   return (
     <Box minH="100vh" color="white" bg="gray.900" position="relative">
-      <Container maxW="container.xl" pt={{ base: 16, md: 20 }} px={{ base: 4, md: 8 }} pb={{ base: 24, md: 20 }}>
-        <VStack spacing={{ base: 8, md: 12 }} align="center" justify="center">
+      <Container maxW="container.md" pt={8} px={4} pb={16}>
+        <VStack spacing={8} align="center" justify="center">
           
           {/* LeetMigo Header and Description */}
           <Box textAlign="center">
-            <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="bold" lineHeight="shorter">
+            <Text fontSize={{ base: '2xl', md: '3xl' }} fontWeight="bold" lineHeight="shorter">
               LeetMigo 👾
             </Text>
             <Text fontSize={{ base: 'md', md: 'lg' }} mt={4} lineHeight="tall">
@@ -63,74 +66,68 @@ const AppContent = () => {
             </Text>
           </Box>
 
-          {/* Banner Image */}
-          <Box width="100%" maxH={{ base: '200px', md: '300px', lg: '400px' }}>
+          {/* Banner Image with Aspect Ratio */}
+          <AspectRatio ratio={16 / 9} width="100%" borderRadius="md">
             <Image 
               src={bannerImage} 
               alt="LeetMigo Banner" 
-              width="100%" 
-              height="auto" 
               objectFit="cover" 
-              maxH="100%"
               loading="lazy"
             />
-          </Box>
+          </AspectRatio>
 
           {/* Waitlist Form */}
-          <Box width="100%" textAlign="center">
-            <Text fontSize="xl" fontWeight="bold" mb={4}>
+          <VStack as="form" onSubmit={handleSubmit} width="100%" spacing={4} textAlign="center">
+            <Text fontSize="lg" fontWeight="bold">
               join the waitlist for free early access
             </Text>
-            <form onSubmit={handleSubmit}>
-              <VStack spacing={4}>
-                <Input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="your name"
-                  textAlign="center"
-                  color="black"
-                  required
-                />
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  textAlign="center"
-                  color="black"
-                  required
-                />
-                <Button type="submit" width="auto" colorScheme="blue">
-                  sign up
-                </Button>
-              </VStack>
-            </form>
-          </Box>
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="your name"
+              textAlign="center"
+              color="black"
+              required
+            />
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@example.com"
+              textAlign="center"
+              color="black"
+              required
+            />
+            <Button type="submit" colorScheme="blue" width="100%" maxW={buttonMaxWidth}>
+              sign up
+            </Button>
+          </VStack>
 
           {/* Free LeetCode Grind 75 Study Spreadsheet Button */}
-          <Box textAlign="center">
-            <a
-              href="https://docs.google.com/spreadsheets/d/1v0OCKeLa9q8douuR6RQmQ5mOG2piThh50wuGA79g2SY/edit?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button colorScheme="green" size="lg">
-                Free LeetCode Grind 75 Study Spreadsheet
-              </Button>
-            </a>
-          </Box>
+          <Button 
+            as="a" 
+            href="https://docs.google.com/spreadsheets/d/1v0OCKeLa9q8douuR6RQmQ5mOG2piThh50wuGA79g2SY/edit?usp=sharing" 
+            colorScheme="green" 
+            size="lg" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            width="100%" 
+            maxW={buttonMaxWidth}
+          >
+            Free LeetCode Grind 75 Study Spreadsheet
+          </Button>
 
           {/* Features Coming Soon */}
-          <VStack align="center">
+          <VStack align="center" spacing={4} width="100%">
             <Text fontSize="lg" fontWeight="bold" textAlign="center">
               features coming soon:
             </Text>
-            <HStack spacing={4} justify="center">
-              <Button variant="outline" colorScheme="blue">
+            <HStack spacing={4} justify="center" width="100%">
+              <Button variant="outline" colorScheme="blue" width="100%" maxW={buttonMaxWidth}>
                 learn
               </Button>
-              <Button variant="outline" colorScheme="blue">
+              <Button variant="outline" colorScheme="blue" width="100%" maxW={buttonMaxWidth}>
                 collab
               </Button>
             </HStack>
@@ -181,7 +178,7 @@ const AppContent = () => {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal>  
     </Box>
   );
 };
