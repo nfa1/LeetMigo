@@ -4,7 +4,9 @@
   "description": "Welcome to [LeetMigo](https://leetmigo.com/) — the future of tech interview preparation. Developed with the latest Web5 technology, LeetMigo is your gateway to securing top-tier software engineering roles.",
   "main": "index.js",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@cashu/cashu-ts": "^1.0.1",
@@ -430,7 +432,7 @@
     "util-deprecate": "^1.0.2",
     "uuid": "^8.3.2",
     "varint": "^6.0.0",
-    "vite": "^5.2.11",
+    "vite": "^5.4.2",
     "vite-plugin-node-polyfills": "^0.22.0",
     "warning": "^4.0.3",
     "webidl-conversions": "^3.0.1",
