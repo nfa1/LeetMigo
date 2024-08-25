@@ -15,6 +15,7 @@ import {
   ModalCloseButton,
   Container,
   AspectRatio,
+  Spinner,
 } from '@chakra-ui/react';
 import bannerImage from './LeetMigo_banner_main_01.png';
 
@@ -55,25 +56,30 @@ const AppContent = () => {
     }
   }, []);
 
-  // Set a consistent max width for all buttons
-  const buttonSizeProps = { width: '100%', maxW: { base: '100%', md: '300px' } };
+  const commonButtonStyles = {
+    colorScheme: 'blue',
+    variant: 'solid',
+    size: 'lg',
+    borderRadius: 'full',
+    width: '100%',
+    maxW: { base: '100%', md: '300px' },
+    _hover: { transform: 'scale(1.05)', boxShadow: 'lg' },
+    _focus: { boxShadow: 'outline' },
+  };
 
   return (
     <Box minH="100vh" color="white" bg="gray.900" position="relative">
       <Container maxW="container.md" pt={8} px={{ base: 4, md: 8 }} pb={16}>
         <VStack spacing={8} align="center" justify="center">
-          
-          {/* LeetMigo Header and Description */}
-          <Box textAlign="center">
-            <Text fontSize={{ base: '2xl', md: '3xl' }} fontWeight="bold" lineHeight="shorter">
+          <Box textAlign="center" px={{ base: 2, md: 4 }}>
+            <Text fontSize={{ base: 'lg', md: 'xl' }} fontWeight="extrabold" lineHeight="shorter">
               LeetMigo 👾
             </Text>
-            <Text fontSize={{ base: 'md', md: 'lg' }} mt={4} lineHeight="tall">
+            <Text fontSize={{ base: 'sm', md: 'md' }} mt={2} fontWeight="semibold">
               the world's first decentralized platform for dsa interview prep, made for non-trad, cracked techies and frens
             </Text>
           </Box>
 
-          {/* Banner Image with Aspect Ratio */}
           <AspectRatio ratio={16 / 9} width="100%" maxW="800px" borderRadius="md">
             <Image 
               src={bannerImage} 
@@ -83,35 +89,31 @@ const AppContent = () => {
             />
           </AspectRatio>
 
-          {/* Waitlist Form (GetLaunchList Widget) */}
+          {!widgetRef.current && <Spinner color="blue.500" size="xl" />}
           <Box width="100%" maxW="400px">
             <div className="launchlist-widget" data-key-id="pI1JRr" data-height="180px"></div>
           </Box>
 
-          {/* Free LeetCode Grind 75 Study Spreadsheet Button */}
           <Button 
             as="a" 
             href="https://docs.google.com/spreadsheets/d/1v0OCKeLa9q8douuR6RQmQ5mOG2piThh50wuGA79g2SY/edit?usp=sharing" 
-            variant="outline"
-            colorScheme="blue"
-            size="lg" 
             target="_blank" 
             rel="noopener noreferrer" 
-            {...buttonSizeProps}
+            {...commonButtonStyles}
+            colorScheme="teal"
           >
             Free LeetCode Grind 75 Study Spreadsheet
           </Button>
 
-          {/* Features Coming Soon */}
           <VStack align="center" spacing={4} width="100%">
             <Text fontSize="lg" fontWeight="bold" textAlign="center">
               features coming soon:
             </Text>
             <HStack spacing={4} justify="center" width="100%">
-              <Button variant="outline" colorScheme="blue" {...buttonSizeProps}>
+              <Button {...commonButtonStyles}>
                 learn
               </Button>
-              <Button variant="outline" colorScheme="blue" {...buttonSizeProps}>
+              <Button {...commonButtonStyles}>
                 collab
               </Button>
             </HStack>
@@ -119,7 +121,6 @@ const AppContent = () => {
         </VStack>
       </Container>
 
-      {/* GDPR Banner */}
       {!gdprAccepted && (
         <Box
           position="fixed"
@@ -134,30 +135,26 @@ const AppContent = () => {
         >
           <Text mb={2}>we use cookies for a based experience. continue to use this site and we'll assume you think it's kino.</Text>
           <HStack spacing={2} justify="center">
-            <Button size="sm" colorScheme="gray" onClick={handleGdprAccept}>
-              ok
+            <Button {...commonButtonStyles} size="sm" colorScheme="gray" onClick={handleGdprAccept}>
+              accept
             </Button>
-            <Button size="sm" colorScheme="gray" onClick={() => alert('please accept the gdpr terms (grudgingly).')}>
-              no
-            </Button>
-            <Button size="sm" colorScheme="gray" variant="outline" onClick={() => setIsPrivacyPolicyOpen(true)}>
-              privacy policy
+            <Button {...commonButtonStyles} size="sm" colorScheme="gray" variant="outline" onClick={() => setIsPrivacyPolicyOpen(true)}>
+              dismiss
             </Button>
           </HStack>
         </Box>
       )}
 
-      {/* Privacy Policy Modal */}
       <Modal isOpen={isPrivacyPolicyOpen} onClose={() => setIsPrivacyPolicyOpen(false)}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent p={4} borderRadius="md">
           <ModalHeader>Privacy Policy</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* Add your privacy policy content here */}
+            {/* Privacy policy content here */}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={() => setIsPrivacyPolicyOpen(false)}>
+            <Button {...commonButtonStyles} onClick={() => setIsPrivacyPolicyOpen(false)}>
               Close
             </Button>
           </ModalFooter>
