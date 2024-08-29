@@ -68,6 +68,7 @@ const AppContent = () => {
                 src={bannerImage} 
                 alt="LeetMigo Banner" 
                 objectFit="cover" 
+                objectPosition="center center"
                 width="100%" 
                 height="100%"
               />
