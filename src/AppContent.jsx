@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
   VStack,
   Text,
   Image,
-  HStack,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,220 +14,159 @@ import {
   ModalCloseButton,
   Container,
   AspectRatio,
-  Spinner,
-  useClipboard,
+  Input,
+  FormControl,
+  FormLabel,
+  Link,
+  Grid,
+  GridItem,
+  useToast,
 } from '@chakra-ui/react';
 import bannerImage from './LeetMigo_banner_main_01.png';
-import { v4 as uuidv4 } from 'uuid';  // Mock DID generation using UUID
+import { v4 as uuidv4 } from 'uuid';
 
 const AppContent = () => {
-  const [gdprAccepted, setGdprAccepted] = useState(false);
-  const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
-  const [did, setDid] = useState('');
-  const { hasCopied, onCopy } = useClipboard(did);
-  const widgetRef = useRef(null);
+  const [referralCode] = useState(uuidv4());
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const toast = useToast();
 
-  const handleGdprAccept = () => {
-    setGdprAccepted(true);
-    localStorage.setItem('gdprAccepted', 'true');
+  const handlePrivacyClick = () => setIsPrivacyModalOpen(true);
+  const handleClosePrivacyModal = () => setIsPrivacyModalOpen(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted');
+    toast({
+      title: "You're in the squad!",
+      description: "Welcome aboard! We'll hit you up soon.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
-  useEffect(() => {
-    const accepted = localStorage.getItem('gdprAccepted');
-    if (accepted) setGdprAccepted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!widgetRef.current) {
-      const script = document.createElement('script');
-      script.src = 'https://getlaunchlist.com/js/widget.js';
-      script.async = true;
-      script.defer = true;
-      script.loading = 'lazy';
-      script.onload = () => {
-        if (window.LaunchListWidget) {
-          window.LaunchListWidget.init();
-          widgetRef.current = true;
-          setTimeout(() => {
-            widgetRef.current = false;
-          }, 500);
-        }
-      };
-      document.body.appendChild(script);
-
-      return () => {
-        if (script.parentNode) {
-          script.parentNode.removeChild(script);
-        }
-      };
-    }
-  }, []);
-
-  useEffect(() => {
-    // Generate DID automatically on mount (mock implementation)
-    const generatedDid = `did:web5:${uuidv4()}`;
-    setDid(generatedDid);
-  }, []);
-
   const commonButtonStyles = {
-    colorScheme: 'orange',
-    bg: 'orange.400',
-    color: 'black',
-    size: 'lg',
-    borderRadius: 'full',
-    paddingX: 8,
-    paddingY: 6,
-    fontSize: 'lg',
-    textDecoration: 'none',  // Remove underline
-    transition: 'all 0.2s ease-in-out',
-    _hover: { bg: 'orange.500', transform: 'scale(1.1)', boxShadow: '2xl' },
-    _active: { bg: 'orange.600' },
-    _focus: { boxShadow: 'outline' },
+    colorScheme: "blue",
+    width: "100%",
+    _hover: { bg: "blue.600" },
+    _active: { bg: "blue.700" },
   };
 
   return (
-    <Box minH="100vh" color="white" bg="gray.900" position="relative">
-      <Container maxW="container.md" pt={8} px={{ base: 4, md: 8 }} pb={16}>
+    <Box minH="100vh" color="white" bg="gray.900">
+      <Box as="header" bg="gray.800" py={4} px={4}>
+        <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold" textAlign="center">
+          LeetMigo 👾 - Decentralized DSA Interview Prep
+        </Text>
+      </Box>
+
+      <Container maxW="container.md" pt={8} px={4} pb={24}>
         <VStack spacing={8} align="center" justify="center">
-          {/* Title Section */}
-          <VStack spacing={2} textAlign="center">
-            <Text fontSize={{ base: 'xl', md: '2xl' }} fontWeight="extrabold" lineHeight="shorter">
-              LeetMigo 👾
-            </Text>
-            <Text fontSize={{ base: 'sm', md: 'lg' }} fontWeight="semibold">
-              the world's first decentralized platform for dsa interview prep, made for non-trad, cracked techies and frens
-            </Text>
-          </VStack>
-
-          {/* Banner Image */}
-          <AspectRatio ratio={16 / 9} width="100%" maxW="800px" borderRadius="md">
-            <Image 
-              src={bannerImage} 
-              alt="LeetMigo Banner" 
-              objectFit="cover" 
-              loading="lazy"
-            />
-          </AspectRatio>
-
-          {/* LaunchList Widget and CTA */}
-          {!widgetRef.current && <Spinner color="orange.400" size="xl" />}
-          {widgetRef.current && (
-            <Text mt={2} fontSize="sm" color="gray.400">
-              Widget loaded successfully
-            </Text>
-          )}
-          <Box width="100%" maxW="400px" mt={4}>
-            <div className="launchlist-widget" data-key-id="pI1JRr" data-height="180px"></div>
+          <Box width="100%" overflow="hidden" borderRadius="md">
+            <AspectRatio ratio={16 / 9}>
+              <Image 
+                src={bannerImage} 
+                alt="LeetMigo Banner" 
+                objectFit="cover" 
+                width="100%" 
+                height="100%"
+              />
+            </AspectRatio>
           </Box>
 
-          <VStack align="center" width="100%" mt={4} spacing={4}>
-            <Text fontSize={{ base: 'lg', md: 'xl' }} fontWeight="bold" color="orange.400" textAlign="center">
-              don’t miss out! 🚀 get free early access and be part of the first wave of cracked techies. sign up now!
-            </Text>
-            <Box width="100%" maxW="400px">
-              <div className="launchlist-widget" data-key-id="pI1JRr" data-height="180px"></div>
-            </Box>
-          </VStack>
+          <Text fontSize={{ base: "lg", md: "xl" }} textAlign="center">
+            Yo, weebs and tech otakus! Join the waitlist for LeetMigo - your AI-powered LeetCode sidekick! 🚀🎮
+          </Text>
 
-          {/* LeetCode 75 Button */}
-          <VStack align="center" width="100%" mt={4}>
-            <Button 
-              {...commonButtonStyles}
-              as="a"
-              href="https://docs.google.com/spreadsheets/d/1v0OCKeLa9q8douuR6RQmQ5mOG2piThh50wuGA79g2SY/edit?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              bg="orange.500"
-              border="2px solid"
-              borderColor="orange.600"
-              color="white"
-              _hover={{ bg: "orange.600", transform: "scale(1.1)", boxShadow: "2xl" }}
-              textDecoration="none"
+          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6} width="100%">
+            {[
+              { title: "💾 Secure Local Storage", desc: "No cap, your data's safer than your mom's secret cookie recipe. Passwordless login, 'cause who's got time for that?" },
+              { title: "💰 Pay with Bitcoin", desc: "Flex on 'em with crypto. We're so web3, even your wallet's feeling FOMO." },
+              { title: "🤝 Collab with Cracked Techies", desc: "Squad up with fellow 10x devs. It's like Discord, but for big brain energy only." },
+              { title: "🤖 AI-Powered Learning", desc: "Your personal 1000x aura software engineer. It's like having Linus Torvalds in your pocket, but cooler." },
+            ].map((item, index) => (
+              <GridItem key={index}>
+                <Text fontSize="lg" fontWeight="bold" mb={2}>
+                  {item.title}
+                </Text>
+                <Text fontSize="md">
+                  {item.desc}
+                </Text>
+              </GridItem>
+            ))}
+          </Grid>
+
+          <Text fontSize={{ base: "lg", md: "xl" }} fontWeight="bold" textAlign="center" mt={4}>
+            Sign up now for free early access! 🚀
+          </Text>
+
+          <Box width="100%" maxW="400px" mt={4}>
+            <form className="launchlist-form" action="https://getlaunchlist.com/s/pI1JRr" method="POST" onSubmit={handleSubmit}>
+              <VStack spacing={4}>
+                <FormControl id="name">
+                  <FormLabel>Your Tag</FormLabel>
+                  <Input name="name" type="text" placeholder="Enter your username" />
+                </FormControl>
+                <FormControl id="email" isRequired>
+                  <FormLabel>Email</FormLabel>
+                  <Input name="email" type="email" placeholder="Drop your email here" required />
+                </FormControl>
+                <Button type="submit" {...commonButtonStyles}>
+                  Let's Goooo! 🔥
+                </Button>
+              </VStack>
+            </form>
+          </Box>
+
+          <Box textAlign="center">
+            <Text fontSize="lg" fontWeight="bold" mb={2}>
+              Free resource for the squad:
+            </Text>
+            <Link
+              href="https://www.techinterviewhandbook.org/grind75?hours=40&weeks=8"
+              isExternal
+              color="blue.300"
+              fontWeight="bold"
+              _hover={{ textDecoration: "underline" }}
             >
-              free leetcode grind 75 study spreadsheet
-            </Button>
-          </VStack>
+              LeetCode Grind 75 Spreadsheet 📊
+            </Link>
+          </Box>
 
-          {/* Features Section */}
-          <VStack align="center" spacing={4} width="100%" mt={8}>
-            <Text fontSize="lg" fontWeight="bold" textAlign="center" color="gray.300">
-              features coming soon:
+          <Text fontSize="sm" textAlign="center" mt={4}>
+            By joining the squad, you're cool with our{' '}
+            <Text
+              as="span"
+              color="blue.300"
+              cursor="pointer"
+              onClick={handlePrivacyClick}
+            >
+              privacy stuff
             </Text>
-            <HStack spacing={{ base: 6, md: 4 }} justify="center" width="100%">
-              <Button {...commonButtonStyles} paddingX={{ base: 10, md: 8 }} paddingY={{ base: 8, md: 6 }}>
-                learn
-              </Button>
-              <Button {...commonButtonStyles} paddingX={{ base: 10, md: 8 }} paddingY={{ base: 8, md: 6 }}>
-                collab
-              </Button>
-              <Button {...commonButtonStyles} paddingX={{ base: 10, md: 8 }} paddingY={{ base: 8, md: 6 }}>
-                pay with bitcoin
-              </Button>
-            </HStack>
-          </VStack>
-
-          {/* DID Login Section */}
-          <VStack spacing={4} align="center" width="100%" mt={8}>
-            <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold" color="orange.400">
-              your DID has been generated! 🎉
-            </Text>
-            <Text fontSize="sm" color="gray.300">
-              DID: {did}
-            </Text>
-            <Button {...commonButtonStyles} onClick={onCopy}>
-              {hasCopied ? 'copied!' : 'copy DID to clipboard'}
-            </Button>
-            <Text fontSize="sm" color="gray.400" mt={2}>
-              save your DID for future logins using your username.
-            </Text>
-          </VStack>
+            . No cap.
+          </Text>
         </VStack>
       </Container>
 
-      {!gdprAccepted && (
-        <Box
-          position="fixed"
-          bottom={0}
-          width="100%"
-          bg="orange.400"
-          color="gray.800"
-          py={3}
-          px={4}
-          textAlign="center"
-          zIndex={1000}
-        >
-          <Text mb={2}>we use cookies for a based experience. continue to use this site and we'll assume you think it's kino.</Text>
-          <HStack spacing={2} justify="center">
-            <Button {...commonButtonStyles} size="sm" bg="gray.600" onClick={handleGdprAccept}>
-              accept
-            </Button>
-            <Button {...commonButtonStyles} size="sm" bg="gray.600" variant="outline" onClick={() => setIsPrivacyPolicyOpen(true)}>
-              dismiss
-            </Button>
-          </HStack>
-        </Box>
-      )}
-
-      <Modal isOpen={isPrivacyPolicyOpen} onClose={() => setIsPrivacyPolicyOpen(false)}>
+      <Modal isOpen={isPrivacyModalOpen} onClose={handleClosePrivacyModal}>
         <ModalOverlay />
-        <ModalContent p={4} borderRadius="md">
-          <ModalHeader>Privacy Policy</ModalHeader>
+        <ModalContent bg="gray.800" color="white">
+          <ModalHeader>Privacy Stuff</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text>
-              This is where your privacy policy content will be displayed. Make sure to
-              include all necessary details regarding data usage, storage, and user rights.
+              Yo, this is where we'd spill the tea on our privacy policy. We'll update this with the real deal soon. Stay tuned!
             </Text>
           </ModalBody>
           <ModalFooter>
-            <Button {...commonButtonStyles} onClick={() => setIsPrivacyPolicyOpen(false)}>
-              Close
+            <Button colorScheme="blue" mr={3} onClick={handleClosePrivacyModal}>
+              Aight, got it
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>  
+      </Modal>
     </Box>
   );
 };
 
-export { AppContent as default };
+export default AppContent;
