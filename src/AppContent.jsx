@@ -62,18 +62,17 @@ const AppContent = () => {
 
       <Container maxW="container.md" pt={8} px={4} pb={24}>
         <VStack spacing={8} align="center" justify="center">
-          <Box width="100%" overflow="hidden" borderRadius="md">
-            <AspectRatio ratio={16 / 9}>
-              <Image 
-                src={bannerImage} 
-                alt="LeetMigo Banner" 
-                objectFit="contain" 
-                objectPosition="center center"
-                width="100%" 
-                height="100%"
-              />
-            </AspectRatio>
-          </Box>
+        <Box width="100%" overflow="hidden" borderRadius="md" maxH={{ base: "200px", md: "300px" }}>
+          <Image 
+            src={bannerImage} 
+            alt="LeetMigo Banner" 
+            objectFit="cover" 
+            objectPosition="center center"
+            width="100%" 
+            height="100%"
+          />
+        </Box>
+
 
           <Text fontSize={{ base: "lg", md: "xl" }} textAlign="center">
             Yo, weebs and tech otakus! Join the waitlist for LeetMigo - your AI-powered LeetCode sidekick! 🚀🎮
