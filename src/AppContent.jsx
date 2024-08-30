@@ -80,10 +80,10 @@ const AppContent = () => {
 
           <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6} width="100%">
             {[
-              { title: "💾 Secure Local Storage", desc: "No cap, your data's safer than your mom's secret cookie recipe. Passwordless login, 'cause who's got time for that?" },
+              { title: "💾 Secure Local Storage", desc: "Your data's safer than your mom's secret cookie recipe, fr. Passwordless login, cuz who's got time for that?" },
               { title: "💰 Pay with Bitcoin", desc: "Flex on 'em with crypto. We're so web3, even your wallet's feeling FOMO." },
               { title: "🤝 Collab with Cracked Techies", desc: "Squad up with fellow 10x devs. It's like Discord, but for big brain energy only." },
-              { title: "🤖 AI-Powered Learning", desc: "Your personal 1000x aura software engineer. It's like having Linus Torvalds in your pocket, but cooler." },
+              { title: "🤖 AI-Powered Learning", desc: "Your personal 1000x aura software engineer. It's like having Linus Torvalds in your pocket, but with gigachad rizz." },
             ].map((item, index) => (
               <GridItem key={index}>
                 <Text fontSize="lg" fontWeight="bold" mb={2}>
@@ -96,6 +96,7 @@ const AppContent = () => {
             ))}
           </Grid>
 
+
           <Text fontSize={{ base: "lg", md: "xl" }} fontWeight="bold" textAlign="center" mt={4}>
             Sign up now for free early access! 🚀
           </Text>
@@ -105,7 +106,7 @@ const AppContent = () => {
               <VStack spacing={4}>
                 <FormControl id="name">
                   <FormLabel>Your Tag</FormLabel>
-                  <Input name="name" type="text" placeholder="Enter your username" />
+                  <Input name="name" type="text" placeholder="Drop your name/tpot username" />
                 </FormControl>
                 <FormControl id="email" isRequired>
                   <FormLabel>Email</FormLabel>
@@ -120,7 +121,7 @@ const AppContent = () => {
 
           <Box textAlign="center">
             <Text fontSize="lg" fontWeight="bold" mb={2}>
-              Free resource for the squad:
+              Free leetcode resource for the squad:
             </Text>
             <Link
               href="https://www.techinterviewhandbook.org/grind75?hours=40&weeks=8"
@@ -160,7 +161,7 @@ const AppContent = () => {
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleClosePrivacyModal}>
-              Aight, got it
+              Bet
             </Button>
           </ModalFooter>
         </ModalContent>
