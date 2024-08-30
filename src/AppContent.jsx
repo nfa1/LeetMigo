@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -21,10 +21,104 @@ import {
   Grid,
   GridItem,
   useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import bannerImage from './LeetMigo_banner_main_01.png';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
+// AIProgrammingPair Component
+const AIProgrammingPair = () => {
+  const [prompt, setPrompt] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const toast = useToast();
+
+  const handlePromptSubmit = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.post('/api/ai', { prompt });
+      setResponse(res.data.response);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Could not get a response from the AI',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePayment = async () => {
+    setPaymentLoading(true);
+    try {
+      const res = await axios.post('/api/pay', {
+        amount: 0.001, // Example amount in BTC
+        walletAddress: 'your-bitcoin-wallet-address-here',
+      });
+      toast({
+        title: 'Payment Successful',
+        description: `Transaction ID: ${res.data.transactionId}`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Payment failed',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
+  return (
+    <Box width="100%" bg="gray.800" p={4} borderRadius="md" mt={8}>
+      <VStack spacing={8} align="center">
+        <Text fontSize="2xl" fontWeight="bold">
+          AI-Powered Learning
+        </Text>
+
+        <FormControl id="prompt">
+          <FormLabel>Enter your DSA problem:</FormLabel>
+          <Input
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Describe your DSA problem here..."
+          />
+        </FormControl>
+
+        <Button colorScheme="blue" onClick={handlePromptSubmit} isDisabled={loading}>
+          {loading ? <Spinner /> : 'Get AI Help'}
+        </Button>
+
+        {response && (
+          <Box bg="gray.700" p={4} borderRadius="md" width="100%">
+            <Text>{response}</Text>
+          </Box>
+        )}
+
+        <Button
+          colorScheme="orange"
+          onClick={handlePayment}
+          isDisabled={paymentLoading}
+        >
+          {paymentLoading ? <Spinner /> : 'Pay with Bitcoin'}
+        </Button>
+      </VStack>
+    </Box>
+  );
+};
+
+// AppContent Component
 const AppContent = () => {
   const [referralCode] = useState(uuidv4());
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
@@ -62,17 +156,6 @@ const AppContent = () => {
 
       <Container maxW="container.md" pt={8} px={4} pb={24}>
         <VStack spacing={8} align="center" justify="center">
-        <Box width="100%" overflow="hidden" borderRadius="md" maxH={{ base: "200px", md: "300px" }}>
-          <Image 
-            src={bannerImage} 
-            alt="LeetMigo Banner" 
-            objectFit="cover" 
-            objectPosition="center center"
-            width="100%" 
-            height="100%"
-          />
-        </Box>
-
 
           <Text fontSize={{ base: "lg", md: "xl" }} textAlign="center">
             Yo, weebs and tech otakus! Join the waitlist for LeetMigo - your AI-powered LeetCode sidekick! 🚀🎮
@@ -96,6 +179,18 @@ const AppContent = () => {
             ))}
           </Grid>
 
+          <Box width="100%" overflow="hidden" borderRadius="md">
+            <AspectRatio ratio={16 / 9}>
+              <Image 
+                src={bannerImage} 
+                alt="LeetMigo Banner" 
+                objectFit="cover" 
+                objectPosition="center"
+                width="100%" 
+                height="100%"
+              />
+            </AspectRatio>
+          </Box>
 
           <Text fontSize={{ base: "lg", md: "xl" }} fontWeight="bold" textAlign="center" mt={4}>
             Sign up now for free early access! 🚀
@@ -106,7 +201,7 @@ const AppContent = () => {
               <VStack spacing={4}>
                 <FormControl id="name">
                   <FormLabel>Your Tag</FormLabel>
-                  <Input name="name" type="text" placeholder="Drop your name/tpot username" />
+                  <Input name="name" type="text" placeholder="Enter your name/tpot username" />
                 </FormControl>
                 <FormControl id="email" isRequired>
                   <FormLabel>Email</FormLabel>
@@ -144,8 +239,11 @@ const AppContent = () => {
             >
               privacy stuff
             </Text>
-            . No cap.
+            . 
           </Text>
+
+          <AIProgrammingPair /> {/* Integrated Component */}
+
         </VStack>
       </Container>
 
