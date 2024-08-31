@@ -154,14 +154,27 @@ const AppContent = () => {
         </Text>
       </Box>
 
-      <Container maxW="container.md" pt={8} px={4} pb={24}>
-        <VStack spacing={8} align="center" justify="center">
+      <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.lg" }} pt={8} px={4} pb={24}>
+        <VStack spacing={{ base: 6, md: 8, lg: 10 }} align="center" justify="center">
 
-          <Text fontSize={{ base: "lg", md: "xl" }} textAlign="center">
+          <Box width="100%" overflow="hidden" borderRadius="md">
+            <AspectRatio ratio={{ base: 16 / 9, md: 21 / 9 }}>
+              <Image 
+                src={bannerImage} 
+                alt="LeetMigo Banner" 
+                objectFit="cover" 
+                objectPosition="center"
+                width="100%" 
+                height="100%"
+              />
+            </AspectRatio>
+          </Box>
+
+          <Text fontSize={{ base: "lg", md: "xl", lg: "2xl" }} textAlign="center" mt={{ base: 2, md: 4 }}>
             Yo, weebs and tech otakus! Join the waitlist for LeetMigo - your AI-powered LeetCode sidekick! 🚀🎮
           </Text>
 
-          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={6} width="100%">
+          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={{ base: 4, md: 6, lg: 8 }} width="100%">
             {[
               { title: "💾 Secure Local Storage", desc: "Your data's safer than your mom's secret cookie recipe, fr. Passwordless login, cuz who's got time for that?" },
               { title: "💰 Pay with Bitcoin", desc: "Flex on 'em with crypto. We're so web3, even your wallet's feeling FOMO." },
@@ -179,19 +192,6 @@ const AppContent = () => {
             ))}
           </Grid>
 
-          <Box width="100%" overflow="hidden" borderRadius="md">
-            <AspectRatio ratio={16 / 9}>
-              <Image 
-                src={bannerImage} 
-                alt="LeetMigo Banner" 
-                objectFit="cover" 
-                objectPosition="center"
-                width="100%" 
-                height="100%"
-              />
-            </AspectRatio>
-          </Box>
-
           <Text fontSize={{ base: "lg", md: "xl" }} fontWeight="bold" textAlign="center" mt={4}>
             Sign up now for free early access! 🚀
           </Text>
@@ -207,7 +207,7 @@ const AppContent = () => {
                   <FormLabel>Email</FormLabel>
                   <Input name="email" type="email" placeholder="Drop your email here" required />
                 </FormControl>
-                <Button type="submit" {...commonButtonStyles}>
+                <Button type="submit" fontSize={{ base: "md", md: "lg" }} py={{ base: 6, md: 8 }} {...commonButtonStyles}>
                   Let's Goooo! 🔥
                 </Button>
               </VStack>
@@ -249,11 +249,11 @@ const AppContent = () => {
 
       <Modal isOpen={isPrivacyModalOpen} onClose={handleClosePrivacyModal}>
         <ModalOverlay />
-        <ModalContent bg="gray.800" color="white">
-          <ModalHeader>Privacy Stuff</ModalHeader>
+        <ModalContent bg="gray.800" color="white" maxW={{ base: "90%", md: "600px" }}>
+          <ModalHeader fontSize={{ base: "lg", md: "xl" }}>Privacy Stuff</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>
+            <Text fontSize={{ base: "md", md: "lg" }}>
               Yo, this is where we'd spill the tea on our privacy policy. We'll update this with the real deal soon. Stay tuned!
             </Text>
           </ModalBody>
@@ -265,7 +265,7 @@ const AppContent = () => {
         </ModalContent>
       </Modal>
     </Box>
-  );
+  );  
 };
 
 export default AppContent;
