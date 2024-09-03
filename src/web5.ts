@@ -50,7 +50,7 @@ export class Web5 {
       const userAgent = await Web5UserAgent.create({ appData });
       agent = userAgent;
 
-      await userAgent.start({ passphrase: 'insecure-static-phrase' });
+      await userAgent.start({ passphrase: 'xntj8xsp9h9hq8a2v85' });
     
       const notConnected = true;
       if (notConnected) {
