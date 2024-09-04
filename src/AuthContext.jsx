@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, Button, VStack, Text, useToast, Spinner, useClipboard, 
-  FormControl, FormLabel, Input
+  Image
 } from '@chakra-ui/react';
 import { Web5 } from '@web5/api';
 import { DidDht } from '@web5/dids';
+import * as CryptoJS from 'crypto-js'; // For encryption
 
 const Web5Login = () => {
   const [web5Data, setWeb5Data] = useState({ did: '', bearerDid: '' });
@@ -14,6 +15,29 @@ const Web5Login = () => {
   const toast = useToast();
   const { hasCopied, onCopy } = useClipboard(web5Data.did);
 
+  const ENCRYPTION_KEY = process.env.REACT_APP_ENCRYPTION_KEY;
+
+  // Encrypt the DID before storing it
+  const encryptDid = (did) => {
+    return CryptoJS.AES.encrypt(did, ENCRYPTION_KEY).toString();
+  };
+
+  // Decrypt the DID when retrieving it
+  const decryptDid = (encryptedDid) => {
+    const bytes = CryptoJS.AES.decrypt(encryptedDid, ENCRYPTION_KEY);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
+
+  const showToast = useCallback((title, description, status) => {
+    toast({
+      title,
+      description,
+      status,
+      duration: 5000,
+      isClosable: true,
+    });
+  }, [toast]);
+
   useEffect(() => {
     const initWeb5 = async () => {
       try {
@@ -22,34 +46,22 @@ const Web5Login = () => {
         });
         setWeb5Instance(web5);
         
-        // Check for saved DID in localStorage
         const storedDid = localStorage.getItem('userDid');
         if (storedDid) {
-          setSavedDid(storedDid);
+          const decryptedDid = decryptDid(storedDid);
+          setSavedDid(decryptedDid);
         }
       } catch (error) {
         console.error('Error initializing Web5:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to initialize Web5. Please check console for details.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
+        showToast('Error', 'Failed to initialize Web5. Please check console for details.', 'error');
       }
     };
     initWeb5();
-  }, [toast]);
+  }, [showToast]);
 
   const generateDid = async () => {
     if (!web5Instance) {
-      toast({
-        title: 'Error',
-        description: 'Web5 is not initialized yet. Please try again in a moment.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showToast('Error', 'Web5 is not initialized yet. Please try again in a moment.', 'error');
       return;
     }
   
@@ -64,26 +76,13 @@ const Web5Login = () => {
       };
   
       setWeb5Data(newWebData);
-      
-      // Save DID to localStorage
-      localStorage.setItem('userDid', aliceDid.uri);
+      const encryptedDid = encryptDid(aliceDid.uri);
+      localStorage.setItem('userDid', encryptedDid);
   
-      toast({
-        title: 'Login Successful',
-        description: 'Your new DID has been generated and saved.',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
+      showToast('Login Successful', 'Your new DID has been generated and saved.', 'success');
     } catch (error) {
       console.error('Error in generateDid:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to generate DID. Please check console for details.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showToast('Error', 'Failed to generate DID. Please check console for details.', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -92,25 +91,11 @@ const Web5Login = () => {
   const loginWithSavedDid = async () => {
     setIsLoading(true);
     try {
-      // Here you would typically verify the DID or perform any necessary authentication
-      // For this example, we'll just set it as the current DID
       setWeb5Data({ did: savedDid, bearerDid: '' });
-      toast({
-        title: 'Login Successful',
-        description: 'You have logged in with your saved DID.',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
+      showToast('Login Successful', 'You have logged in with your saved DID.', 'success');
     } catch (error) {
       console.error('Error logging in with saved DID:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to log in with saved DID. Please try generating a new one.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      showToast('Error', 'Failed to log in with saved DID. Please try generating a new one.', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -119,6 +104,8 @@ const Web5Login = () => {
   return (
     <Box width="100%" bg="gray.800" p={4} borderRadius="md" mt={8} textAlign="center">
       <VStack spacing={6} align="center">
+        <Image src="/LeetMigo_banner_main_01.png" alt="LeetMigo Banner" width="200px" height="auto" />
+
         <Text fontSize="2xl" fontWeight="bold" color="orange.300">
           Web5 Instant Login
         </Text>
@@ -176,9 +163,6 @@ const Web5Login = () => {
           </Box>
         )}
 
-        <Text fontSize="md" color="gray.400" mt={4}>
-          Your DID is saved automatically. You can use it to log in instantly in future sessions.
-        </Text>
       </VStack>
     </Box>
   );
