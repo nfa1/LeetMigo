@@ -193,6 +193,7 @@
     "interface-store": "^5.1.2",
     "internal-slot": "^1.0.7",
     "invariant": "^2.2.4",
+    "ipfs-core": "^0.18.1",
     "ipfs-unixfs": "^11.1.3",
     "ipfs-unixfs-exporter": "^13.1.5",
     "ipfs-unixfs-importer": "^15.1.5",

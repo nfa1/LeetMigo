@@ -3,45 +3,25 @@ import {
   Box, Button, VStack, Text, useToast, Spinner, useClipboard, Container, 
   FormControl, FormLabel, Input, Grid, GridItem, AspectRatio, Link, Modal, 
   ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, 
-  Heading, Flex 
+  Heading, Flex, Image
 } from '@chakra-ui/react';
 import { Web5 } from '@web5/api';
 import { DidDht } from '@web5/dids';
 import axios from 'axios';
 
-// Polyfill for process.nextTick
-if (typeof window !== 'undefined' && !window.process) {
-  window.process = {
-    nextTick: (callback) => {
-      setTimeout(callback, 0);
-    },
-  };
-}
-
-// Secure Password Configuration for Web5 Instance
-const configureWeb5 = async () => {
-  try {
-    const { web5 } = await Web5.connect({
-      password: 'your-secure-unique-password', // Set a secure and unique password here
-    });
-    return web5;
-  } catch (error) {
-    throw new Error('Failed to configure Web5: ' + error.message);
-  }
-};
-
-// DIDDisplay Component
+// Adjusted image path for proper loading
 const DIDDisplay = ({ did, onCopy, hasCopied }) => (
-  <Box bg="gray.700" p={4} borderRadius="md" width="100%" textAlign="center">
-    <Text fontSize={{ base: "md", md: "lg" }} mb={2} color="white">Your DID:</Text>
-    <Text fontSize="md" wordBreak="break-all" mb={2} color="blue.300">{did}</Text>
-    <Button colorScheme="orange" onClick={onCopy} aria-label="Copy DID to Clipboard" width="100%" maxW="300px" mx="auto">
-      {hasCopied ? 'DID Copied!' : 'Copy DID to Clipboard'}
-    </Button>
+  <Box>
+    <Text fontSize="sm" mb={2}>Your Decentralized ID:</Text>
+    <Flex align="center" justify="center">
+      <Text isTruncated maxW="200px" mr={2}>{did || "No DID available"}</Text> {/* Fallback for missing DID */}
+      <Button onClick={onCopy} ml={2}>
+        {hasCopied ? 'Copied!' : 'Copy'}
+      </Button>
+    </Flex>
   </Box>
 );
 
-// Web5Login Component
 const Web5Login = () => {
   const [web5Data, setWeb5Data] = useState({ did: '', bearerDid: '' });
   const [isLoading, setIsLoading] = useState(false);
@@ -52,56 +32,41 @@ const Web5Login = () => {
   useEffect(() => {
     const initWeb5 = async () => {
       try {
-        const web5 = await configureWeb5();
+        const { web5, did } = await Web5.connect();
         setWeb5Instance(web5);
+        setWeb5Data({ did, bearerDid: did });
       } catch (error) {
-        console.error('Error initializing Web5:', error);
+        console.error('Failed to initialize Web5:', error);
         toast({
-          title: 'Error',
-          description: 'Failed to initialize Web5. Please check console for details.',
+          title: 'Web5 Initialization Failed',
+          description: 'Unable to connect to Web5. Please try again later.',
           status: 'error',
           duration: 5000,
           isClosable: true,
         });
       }
     };
+
     initWeb5();
   }, [toast]);
 
   const generateDid = async () => {
-    if (!web5Instance) {
-      toast({
-        title: 'Error',
-        description: 'Web5 is not initialized yet. Please try again in a moment.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
-    }
-
     setIsLoading(true);
     try {
-      const dhtDid = await DidDht.create();
-      const aliceDid = await web5Instance.did.create('key');
-
-      setWeb5Data({
-        did: aliceDid.uri,
-        bearerDid: dhtDid.uri,
-      });
-
+      const did = await DidDht.create();
+      setWeb5Data({ did: did.uri, bearerDid: did.uri });
       toast({
-        title: 'Login Successful',
-        description: 'Your new DID has been generated.',
+        title: 'DID Generated',
+        description: 'Your Decentralized ID has been created successfully.',
         status: 'success',
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
     } catch (error) {
-      console.error('Error in generateDid:', error);
+      console.error('Failed to generate DID:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to generate DID. Please check console for details.',
+        title: 'DID Generation Failed',
+        description: 'Unable to generate a new DID. Please try again.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -114,8 +79,10 @@ const Web5Login = () => {
   return (
     <Box width="100%" bg="gray.800" p={4} borderRadius="md" mt={8} textAlign="center">
       <VStack spacing={6} align="center">
+        <Image src="/public/LeetMigo_banner_main_01.png" alt="LeetMigo Banner" width="200px" height="auto" />
+
         <Text fontSize="2xl" fontWeight="bold" color="orange.300">
-          Web5 Instant Login
+          Web5 Instant Login - No Cap, Just Facts 💯
         </Text>
         <Box position="relative" width="100%">
           <Button
@@ -128,7 +95,7 @@ const Web5Login = () => {
             maxW="300px"
             mx="auto"
           >
-            {web5Data.did ? 'Regenerate DID' : 'Login with Web5'}
+            {web5Data.did ? 'Regenerate DID' : 'Get Your Decentralized ID'}
           </Button>
           {isLoading && (
             <Spinner
@@ -146,271 +113,179 @@ const Web5Login = () => {
           <DIDDisplay did={web5Data.did} onCopy={onCopy} hasCopied={hasCopied} />
         )}
 
-        {web5Data.bearerDid && (
-          <Box bg="gray.700" p={4} borderRadius="md" width="100%" textAlign="center">
-            <Text fontSize="lg" mb={2} color="white">Your Bearer DID:</Text>
-            <Text fontSize="md" wordBreak="break-all" mb={2} color="blue.300">
-              {web5Data.bearerDid}
-            </Text>
-            <Button colorScheme="orange" onClick={onCopy} aria-label="Copy Bearer DID to Clipboard" width="100%" maxW="300px" mx="auto">
-              {hasCopied ? 'Bearer DID Copied!' : 'Copy Bearer DID to Clipboard'}
-            </Button>
-          </Box>
-        )}
-
         <Text fontSize="md" color="gray.400" mt={4}>
-          A DID (Decentralized Identifier) is a unique identifier that enables you to have control over your own data.
+          Your DID is your digital flex. It's like your online street cred, but decentralized. No cap.
         </Text>
       </VStack>
     </Box>
   );
 };
 
-// AIProgrammingPair Component
 const AIProgrammingPair = () => {
-  const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [paymentLoading, setPaymentLoading] = useState(false);
-  const toast = useToast();
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handlePromptSubmit = async () => {
-    setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     try {
-      const res = await axios.post('/api/ai', { prompt });
-      setResponse(res.data.response);
+      const response = await axios.post('/api/ai', { question });
+      setAnswer(response.data.answer);
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Could not get a response from the AI',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      console.error('Error fetching AI response:', error);
+      setAnswer('Sorry, there was an error processing your request. Please try again.');
     } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePayment = async () => {
-    setPaymentLoading(true);
-    try {
-      const res = await axios.post('/api/pay', {
-        amount: 0.001, // Example amount in BTC
-        walletAddress: 'your-bitcoin-wallet-address-here',
-      });
-      toast({
-        title: 'Payment Successful',
-        description: `Transaction ID: ${res.data.transactionId}`,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Payment failed',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-    } finally {
-      setPaymentLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <Box width="100%" bg="gray.800" p={4} borderRadius="md" mt={8} textAlign="center">
-      <VStack spacing={8} align="center">
-        <Text fontSize="2xl" fontWeight="bold">🤖 AI-Powered Learning</Text>
-
-        <FormControl id="prompt" width="100%" textAlign="center">
-          <FormLabel textAlign="center">Enter your DSA problem:</FormLabel>
+    <Box width="100%" bg="gray.800" p={4} borderRadius="md">
+      <form onSubmit={handleSubmit}>
+        <FormControl>
+          <FormLabel textAlign ="center">Ask your coding question:</FormLabel>
           <Input
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Describe your DSA problem here..."
-            width="100%"
-            maxW="300px"
-            mx="auto"
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="E.g., How do I implement a binary search?"
           />
         </FormControl>
-
-        <Button colorScheme="blue" onClick={handlePromptSubmit} isDisabled={loading} width="100%" maxW="300px" mx="auto">
-          {loading ? <Spinner /> : 'Get AI Help'}
+        <Button mt={4} colorScheme="blue" type="submit" isLoading={isLoading}>
+          Get AI Help
         </Button>
-
-        {response && (
-          <Box bg="gray.700" p={4} borderRadius="md" width="100%" maxW="300px" wordBreak="break-word" mx="auto">
-            <Text>{response}</Text>
-          </Box>
-        )}
-
-        <Button
-          colorScheme="orange"
-          onClick={handlePayment}
-          isDisabled={paymentLoading}
-          width="100%"
-          maxW="300px"
-          mx="auto"
-        >
-          {paymentLoading ? <Spinner /> : 'Pay with Bitcoin 💰'}
-        </Button>
-      </VStack>
+      </form>
+      {answer && (
+        <Box mt={4}>
+          <Text fontWeight="bold">AI Response:</Text>
+          <Text>{answer}</Text>
+        </Box>
+      )}
     </Box>
   );
 };
 
-// AppContent Component
 const AppContent = () => {
-  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
-  const toast = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProblem, setSelectedProblem] = useState(null);
 
-  const handlePrivacyClick = () => setIsPrivacyModalOpen(true);
-  const handleClosePrivacyModal = () => setIsPrivacyModalOpen(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted');
-    toast({
-      title: "You're in the squad!",
-      description: "Welcome aboard! We'll hit you up soon.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+  const openModal = (problem) => {
+    setSelectedProblem(problem);
+    setIsModalOpen(true);
   };
 
-  const commonButtonStyles = {
-    colorScheme: "blue",
-    width: "100%",
-    maxW: "300px",
-    fontSize: { base: "md", md: "lg" },
-    _hover: { bg: "blue.600" },
-    _active: { bg: "blue.700" },
-    mx: "auto", 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProblem(null);
   };
+
+  const problems = [
+    { id: 1, title: 'Two Sum', difficulty: 'Easy' },
+    { id: 2, title: 'Reverse Linked List', difficulty: 'Easy' },
+    { id: 3, title: 'Binary Tree Level Order Traversal', difficulty: 'Medium' },
+    { id: 4, title: 'Merge K Sorted Lists', difficulty: 'Hard' },
+  ];
 
   return (
     <Box minH="100vh" color="white" bg="gray.900" textAlign="center" overflowY="auto" overflowX="hidden" pt={{ base: 8, md: 12 }}>
       <Flex as="header" bg="gray.800" py={8} px={4} align="center" justify="center" direction="column" minH={{ base: "35vh", md: "40vh" }} flexShrink="0"> 
+        <Image src="/public/LeetMigo_banner_main_01.png" alt="LeetMigo Banner" width="300px" height="auto" mb={4} />
         <Heading fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold" textAlign="center">
-          LeetMigo 👾 - Decentralized DSA Interview Prep
+          LeetMigo 👾 - No Cap DSA Prep
         </Heading>
         <Text fontSize={{ base: "md", md: "lg" }} mt={4} textAlign="center" px={{ base: 4, md: 8 }}>
-          Join the revolution of decentralized, AI-powered learning to prepare for your coding interviews.
+          Level up your coding game with AI-powered, decentralized learning. It's not just prep, it's a vibe.
         </Text>
       </Flex>
 
       <Container maxW={{ base: "container.sm", md: "container.md", lg: "container.lg" }} pt={8} px={4} pb={24} textAlign="center" flexGrow="1"> 
         <VStack spacing={{ base: 6, md: 8, lg: 10 }} align="center" justify="center">
-
-          <Box width="100%" overflow="hidden" borderRadius="md" textAlign="center">
-            <AspectRatio ratio={{ base: 16 / 9, md: 21 / 9 }}>
-              <Box bg="gray.600" width="100%" height="100%" />
-            </AspectRatio>
-          </Box>
-
-          <Text fontSize={{ base: "lg", md: "xl", lg: "2xl" }} textAlign="center" mt={{ base: 2, md: 4 }}>
-            Yo, weebs and tech otakus! Join the waitlist for LeetMigo - your AI-powered LeetCode sidekick! 🚀🎮
+          <Text fontSize="xl" fontWeight="bold">
+            Featured Problems
           </Text>
-
-          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={{ base: 4, md: 6, lg: 8 }} width="100%" textAlign="center">
-            <GridItem>
-              <Text fontSize="lg" fontWeight="bold" mb={2} textAlign="center">💾 Secure Local Storage</Text>
-              <Text fontSize="md" textAlign="center">
-                Your data's safer than your mom's secret cookie recipe, fr. Passwordless login, cuz who's got time for that?
-              </Text>
-            </GridItem>
-            <GridItem>
-              <Text fontSize="lg" fontWeight="bold" mb={2} textAlign="center">💰 Pay with Bitcoin</Text>
-              <Text fontSize="md" textAlign="center">
-                Flex on 'em with crypto. We're so web3, even your wallet's feeling FOMO.
-              </Text>
-            </GridItem>
-            <GridItem>
-              <Text fontSize="lg" fontWeight="bold" mb={2} textAlign="center">🤝 Collab with Cracked Techies</Text>
-              <Text fontSize="md" textAlign="center">
-                Squad up with fellow 10x devs. It's like Discord, but for big brain energy only.
-              </Text>
-            </GridItem>
-            <GridItem>
-              <Text fontSize="lg" fontWeight="bold" mb={2} textAlign="center">🤖 AI-Powered Learning</Text>
-              <Text fontSize="md" textAlign="center">
-                Your personal 1000x aura software engineer. It's like having Linus Torvalds in your pocket, but with gigachad rizz.
-              </Text>
-            </GridItem>
+          <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }} gap={6}>
+            {problems.map((problem) => (
+              <GridItem key={problem.id}>
+                <Box
+                  bg="gray.700"
+                  p={4}
+                  borderRadius="md"
+                  cursor="pointer"
+                  onClick={() => openModal(problem)}
+                  _hover={{ bg: "gray.600" }}
+                >
+                  <Text fontWeight="bold">{problem.title}</Text>
+                  <Text color={problem.difficulty === 'Easy' ? 'green.300' : problem.difficulty === 'Medium' ? 'yellow.300' : 'red.300'}>
+                    {problem.difficulty}
+                  </Text>
+                </Box>
+              </GridItem>
+            ))}
           </Grid>
 
-          <Text fontSize={{ base: "lg", md: "xl" }} fontWeight="bold" textAlign="center" mt={4}>
-            Sign up now for free early access! 🚀
-          </Text>
+          <Web5Login />
+          <AIProgrammingPair />
 
-          <Box width="100%" maxW="300px" mt={4} textAlign="center">
-            <form className="launchlist-form" action="https://getlaunchlist.com/s/pI1JRr" method="POST" onSubmit={handleSubmit}>
-              <VStack spacing={4}>
-                <FormControl id="name">
-                  <FormLabel>Your Tag</FormLabel>
-                  <Input name="name" type="text" placeholder="Enter your name/tpot username" width="100%" mx="auto" />
-                </FormControl>
-                <FormControl id="email" isRequired>
-                  <FormLabel>Email</FormLabel>
-                  <Input name="email" type="email" placeholder="Drop your email here" required width="100%" mx="auto" />
-                </FormControl>
-                <Button type="submit" {...commonButtonStyles}>
-                  Let's Goooo! 🔥
-                </Button>
-              </VStack>
-            </form>
+          <Box>
+            <Text fontSize="xl" fontWeight="bold" mb={4}>
+              Web3 Integration
+            </Text>
+            <Text>
+              Connect your wallet to access exclusive content and track your progress on the blockchain.
+            </Text>
+            <Button mt={4} colorScheme="purple">
+              Connect Wallet
+            </Button>
           </Box>
 
-          <Box textAlign="center">
-            <Text fontSize="lg" fontWeight="bold" mb={2}>Free leetcode resource for the squad:</Text>
-            <Link
-              href="https://www.techinterviewhandbook.org/grind75?hours=40&weeks=8"
-              color="blue.300"
-              fontWeight="bold"
-              isExternal
-              _hover={{ textDecoration: "underline" }}
-              wordBreak="break-word"
-              textAlign="center"
-            >
-              LeetCode Grind 75 Spreadsheet 📊
+          <Box>
+            <Text fontSize="xl" fontWeight="bold" mb={4}>
+              Community Leaderboard
+            </Text>
+            <Text>
+              Compete with other developers and showcase your problem-solving skills.
+            </Text>
+            <Link color="blue.300" href="#" mt={2} display="inline-block">
+              View Leaderboard
             </Link>
           </Box>
 
-          <Text fontSize="sm" textAlign="center" mt={4}>
-            By joining the squad, you're cool with our{' '}
-            <Text
-              as="span"
-              color="blue.300"
-              cursor="pointer"
-              onClick={handlePrivacyClick}
-            >
-              privacy stuff
-            </Text>.
-          </Text>
-
-          <Web5Login /> {/* Integrated Web5 Login Component */}
-          <AIProgrammingPair /> {/* Integrated AI Programming Pair Component */}
-
+          <Box>
+            <Text fontSize="xl" fontWeight="bold" mb={4}>
+              AI-Powered Code Review
+            </Text>
+            <Text>
+              Get instant feedback on your solutions with our advanced AI code reviewer.
+            </Text>
+            <Button mt={4} colorScheme="green">
+              Try AI Code Review
+            </Button>
+          </Box>
         </VStack>
       </Container>
 
-      <Modal isOpen={isPrivacyModalOpen} onClose={handleClosePrivacyModal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal} size="xl">
         <ModalOverlay />
-        <ModalContent bg="gray.800" color="white" maxW={{ base: "90%", md: "600px" }} textAlign="center">
-          <ModalHeader fontSize={{ base: "lg", md: "xl" }} textAlign="center">Privacy Stuff</ModalHeader>
+        <ModalContent bg="gray.800" color="white">
+          <ModalHeader>{selectedProblem?.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontSize={{ base: "md", md: "lg" }} textAlign="center">
-              Yo, this is where we'd spill the tea on our privacy policy. We'll update this with the real deal soon. Stay tuned!
-            </Text>
+            <Text>: {selectedProblem?.difficulty}</Text>
+            <Text mt={4}>Problem description and details would go here...</Text>
+            <AspectRatio ratio={16 / 9} mt={4}>
+              <iframe
+                title="Sample Problem Video"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                allowFullScreen
+              />
+            </AspectRatio>
           </ModalBody>
-          <ModalFooter textAlign="center">
-            <Button colorScheme="blue" mr={3} onClick={handleClosePrivacyModal}>
-              Bet
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={closeModal}>
+              Close
             </Button>
+            <Button variant="ghost">Solve Problem</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -419,3 +294,4 @@ const AppContent = () => {
 };
 
 export default AppContent;
+
