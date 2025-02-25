@@ -117,7 +117,7 @@
     "es-set-tostringtag": "^2.0.3",
     "es-shim-unscopables": "^1.0.2",
     "es-to-primitive": "^1.2.1",
-    "esbuild": "^0.20.2",
+    "esbuild": "^0.25.0",
     "escalade": "^3.1.2",
     "escape-string-regexp": "^1.0.5",
     "eslint": "^8.57.0",
@@ -286,7 +286,7 @@
     "multihashes": "^4.0.3",
     "murmurhash3js-revisited": "^3.0.0",
     "nanoassert": "^2.0.0",
-    "nanoid": "^3.3.8",
+    "nanoid": "^5.0.9",
     "napi-macros": "^2.2.2",
     "natural-compare": "^1.4.0",
     "node-addon-api": "^5.1.0",
@@ -426,7 +426,7 @@
     "ulidx": "^2.1.0",
     "unbox-primitive": "^1.0.2",
     "uncontrollable": "^7.2.1",
-    "undici": "^5.28.5",
+    "undici": "^6.21.1",
     "undici-types": "^5.26.5",
     "update-browserslist-db": "^1.0.13",
     "uri-js": "^4.4.1",
@@ -436,8 +436,8 @@
     "util-deprecate": "^1.0.2",
     "uuid": "^8.3.2",
     "varint": "^6.0.0",
-    "vite": "^5.4.6",
-    "vite-plugin-node-polyfills": "^0.22.0",
+    "vite": "^6.2.0",
+    "vite-plugin-node-polyfills": "^0.23.0",
     "warning": "^4.0.3",
     "webidl-conversions": "^3.0.1",
     "websocket-driver": "^0.7.4",
@@ -463,6 +463,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1"
+    "@vitejs/plugin-react": "^4.3.4"
   }
 }
